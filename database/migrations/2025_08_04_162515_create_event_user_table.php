@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('event_user', function (Blueprint $table) {
+        Schema::create('event_users', function (Blueprint $table) {
             $table->id(); // optional, pivot tables don't always need it
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');

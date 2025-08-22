@@ -20,45 +20,41 @@
     </div>
 
     <section class=" rounded-lg dark:bg-gray-800 flex flex-col justify-between flex-wrap gap-10 ">
-        <div>
-            <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {{ ucfirst($event->name) }}
-            </h2>
-            <div class="font-normal text-gray-700 dark:text-gray-400 flex flex-col gap-4">
-                <p>
-                    <span class="font-semibold">
-                        Department:
-                    </span>
-                    {{ $event->department->name }}
-                </p>
-                <p>
-                    <span class="font-semibold">
-                        Registration Start Date:
-                    </span>
-                    {{ $event->start_date->format('d/m/Y') }}
-                </p>
-                <p>
-                    <span class="font-semibold">
-                        Registration End Date:
-                    </span>
-                    {{ $event->end_date->format('d/m/Y') }}
-                </p>
-                <p>
-                    <span class="font-semibold">
-                        Location:
-                    </span>
-                    {{ $event->location }}
-                </p>
+        <div class="container">
+            <div class="card mb-4">
+                @if ($event->image)
+                    <img src="{{ asset('storage/' . $event->image) }}" class="card-img-top" alt="{{ $event->name }}">
+                @endif
+
+                <div class="card-body">
+                    <h1 class="card-title">{{ $event->name }}</h1>
+                    <p class="card-text">{{ $event->description }}</p>
+
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item"><strong>Start Date:</strong> {{ $event->start_date }}</li>
+                        <li class="list-group-item"><strong>End Date:</strong> {{ $event->end_date }}</li>
+                        <li class="list-group-item"><strong>Location:</strong> {{ $event->location }}</li>
+                        <li class="list-group-item"><strong>Fees:</strong> ₹{{ $event->fees }}</li>
+                        <li class="list-group-item"><strong>Capacity:</strong> {{ $event->capacity }}</li>
+                    </ul>
+
+                    {{-- Registration logic --}}
+                    @auth
+                        @if ($event->users->contains(auth()->id()))
+                            <form action="{{ route('registrations.destroy', $event) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Cancel Registration</button>
+                            </form>
+                        @else
+                            <form action="{{ route('registrations.store', $event) }}" method="POST">
+                                @csrf
+                                <button class="btn btn-success">Register</button>
+                            </form>
+                        @endif
+                    @endauth
+                </div>
             </div>
         </div>
-
-        <form action="{{ route('events.register', $event->id) }}" method="POST">
-            @csrf
-            <div class="flex items-center gap-2">
-                <button type="submit"
-                    class="px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Register</button>
-                <span class="text-gray-700 dark:text-gray-400">Registration Fee: Rs.{{ $event->fees }}</span>
-            </div>
-        </form>
     </section>
 </x-layout>

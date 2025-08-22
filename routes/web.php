@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventUserController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -44,10 +45,21 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('events')->group(function () {
         Route::get('/', [EventController::class, 'index'])->name('events.index');
         Route::get('/create', [EventController::class, 'create'])->name('events.create');
-        Route::post('/store', [EventController::class, 'store'])->name('events.store');
+        Route::post('/', [EventController::class, 'store'])->name('events.store');
         Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
         Route::patch('/{event}/update', [EventController::class, 'update'])->name('events.update');
-        Route::post('/{event}/register', [EventController::class, 'register'])->name('events.register');
         Route::delete('/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+    });
+
+    // Event registrations (EventUserController)
+    Route::prefix('registrations')->group(function () {
+        // normal user
+        Route::post('/{event}', [EventUserController::class, 'store'])->name('registrations.store');
+        Route::delete('/{event}', [EventUserController::class, 'destroy'])->name('registrations.destroy');
+        Route::get('/my', [EventUserController::class, 'myRegistrations'])->name('registrations.my');
+
+        // organizer / admin
+        Route::get('/event/{event}', [EventUserController::class, 'index'])->name('registrations.index');
+        Route::patch('/{eventUser}/status', [EventUserController::class, 'updateStatus'])->name('registrations.update_status');
     });
 });

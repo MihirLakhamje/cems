@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EventController extends Controller
 {
@@ -13,10 +14,16 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('department')->latest()->paginate(8);
-        return view('events.index', [
-            'events' => $events,
-        ]);
+        try {
+            $events = Event::with('department')->latest()->paginate(8);
+            return view('events.index', [
+                'events' => $events,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Fetching events failed: ' . $e->getMessage());
+            // dd($e->getMessage());
+            return redirect()->back()->with('error', 'Failed to fetch events. Please try again.');
+        }
     }
 
     /**
@@ -24,6 +31,7 @@ class EventController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Event::class);
         return view('events.create');
     }
 
@@ -32,6 +40,8 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Event::class);
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -73,18 +83,12 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Event $event)
     {
+        Gate::authorize('update', $event);
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -119,6 +123,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        Gate::authorize('delete', $event);
         try {
             $event->delete();
             return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
@@ -129,35 +134,5 @@ class EventController extends Controller
         }
     }
 
-    /**
-     * Handle event registration.
-     */
-    public function register(Request $request, Event $event)
-    {
-        $request->validate([
-            'event_id' => ['required', 'exists:events,id'],
-        ]);
-
-        try {
-            $user = auth()->user();
-
-            // Check if the user is already registered for the event
-            if ($user->events()->where('event_id', $event->id)->exists()) {
-                return redirect()->back()->with('error', 'You are already registered for this event.');
-            }
-
-            // Attach user to event (pivot table)
-            $user->events()->attach($event->id, [
-                'status' => 'pending', // default registration status
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            return redirect()->back()->with('success', 'Successfully registered for the event!');
-        } catch (\Exception $e) {
-            \Log::error('Event registration failed: ' . $e->getMessage());
-            // dd($e->getMessage());
-            return redirect()->back()->with('error', 'Failed to register for the event. Please try again.');
-        }
-    }
+    
 }

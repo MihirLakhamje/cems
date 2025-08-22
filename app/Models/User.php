@@ -58,6 +58,6 @@ class User extends Authenticatable
     }
 
     public function events(){
-        return $this->belongsToMany(Event::class)->withPivot('status')->withTimestamps();
+        return $this->belongsToMany(Event::class, 'event_users')->withPivot('status')->withTimestamps();
     }
 }
