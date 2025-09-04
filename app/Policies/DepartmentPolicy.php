@@ -25,10 +25,14 @@ class DepartmentPolicy
         if ($user->role === 'admin') {
             return true;
         }
+        if ($user->role === 'user') {
+            return true;
+        }
         // Organizers can view their own department
         if ($user->role === 'organizer' && $user->department->id === $department->id) {
             return true;
         }
+
         return false;
     }
 
@@ -53,10 +57,7 @@ class DepartmentPolicy
         if ($user->role === 'admin') {
             return true;
         }
-        if($user->role === 'organizer' && $user->department->id === $department->id) {
-            // Organizers can update their own department
-            return true;
-        }
+        
         return false;
     }
 

@@ -12,17 +12,33 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
         try {
-            $events = Event::with('department')->latest()->paginate(8);
+            $searchEvent = $request->query('search');
+            $eventsQuery = Event::with('department');
+            if ($searchEvent) {
+                $events = $eventQuery->whereHas(
+                    'department',
+                    function ($query) use ($searchEvent) {
+                        $query->where('name', 'like', "%$searchEvent%");
+                    }
+                )->paginate(8);
+            }
+            else {
+                $events = $eventsQuery->latest()->paginate(8);
+            }
+
+            // Step 2: Return the view with the departments data
             return view('events.index', [
                 'events' => $events,
+                'search' => $searchEvent
             ]);
         } catch (\Exception $e) {
             \Log::error('Fetching events failed: ' . $e->getMessage());
-            // dd($e->getMessage());
-            return redirect()->back()->with('error', 'Failed to fetch events. Please try again.');
+            dd($e->getMessage());
+            // return redirect()->back()->with('error', 'Failed to fetch events. Please try again.');
         }
     }
 
@@ -77,8 +93,10 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        $users = $event->users()->paginate(4);
         return view('events.show', [
             'event' => $event,
+            'users' => $users,
         ]);
     }
 
@@ -133,6 +151,4 @@ class EventController extends Controller
             return redirect()->back()->with('error', 'Failed to delete event. Please try again.');
         }
     }
-
-    
 }

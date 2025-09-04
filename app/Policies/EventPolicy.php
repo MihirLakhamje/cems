@@ -21,6 +21,9 @@ class EventPolicy
      */
     public function view(User $user, Event $event): bool
     {
+        if ($user->role === 'user') {
+            return true;
+        }
         return false;
     }
 
@@ -40,26 +43,41 @@ class EventPolicy
      */
     public function update(User $user, Event $event): bool
     {
-        if ($user->role === 'organizer' && $event->department->id === $user->department->id) {
+        if (
+            $user->role === 'organizer' &&
+            $event->department &&
+            $event->department_id === $user->department_id
+        ) {
             return true;
         }
         return false;
     }
+
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Event $event): bool
     {
-        if ($user->role === 'organizer' && $event->department->id === $user->department->id) {
+        if (
+            $user->role === 'organizer' &&
+            $event->department &&
+            $event->department_id === $user->department_id
+        ) {
             return true;
         }
+        
         if ($user->role === 'admin') {
             return true;
         }
         return false;
     }
 
+    public function eventUsers(User $user, Event $event): bool
+    {
+        return $user->role === 'admin'
+            || ($user->role === 'organizer' && $event->department_id === $user->department_id);
+    }
     /**
      * Determine whether the user can restore the model.
      */

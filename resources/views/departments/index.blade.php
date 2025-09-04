@@ -10,24 +10,33 @@
     <x-slot:header>Departments</x-slot:header>
 
     <section class="flex flex-col gap-2" x-data="{
-            departmentEditModal: @json($errors->any()), 
-            selected: {
-                id: '{{ old('id') ?? '' }}',
-                name: '{{ old('name') ?? '' }}',
-                headName: '{{ old('head_name') ?? '' }}',
-                headEmail: '{{ old('head_email') ?? '' }}',
-                headPhone: '{{ old('head_phone') ?? '' }}',
-                festType: '{{ old('fest_type') ?? '' }}',
-                isActive: '{{ old('is_active') ?? '' }}',
-                noOfEvents: '{{ old('noOfEvents') ?? '' }}'
-            }
-        }">
+        departmentEditModal: @json($errors->any()),
+        selected: {
+            id: '{{ old('id') ?? '' }}',
+            name: '{{ old('name') ?? '' }}',
+            headName: '{{ old('head_name') ?? '' }}',
+            headEmail: '{{ old('head_email') ?? '' }}',
+            headPhone: '{{ old('head_phone') ?? '' }}',
+            festType: '{{ old('fest_type') ?? '' }}',
+            isActive: '{{ old('is_active') ?? '' }}',
+            noOfEvents: '{{ old('noOfEvents') ?? '' }}'
+        }
+    }">
 
-        <div class="my-2">
-            <a href="{{ route('departments.create') }}"
-                class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
-                Add department
-            </a>
+        <div class = "flex flex-wrap justify-between items-center">
+            
+            @can('create', App\Models\Department::class)
+                <div class="my-2">
+                    <a href="{{ route('departments.create') }}"
+                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        Add department
+                    </a>
+                </div>
+            @endcan
+
+            <div class="my-2">
+                <x-form-search :action="'/departments'" :name="'search'" :placeholder="'Search department'" />
+            </div>
         </div>
 
         <x-data-table>
@@ -40,27 +49,32 @@
                 <th class="px-6 py-3">Action</th>
             </x-slot:column>
 
-            @foreach($departments as $department)
-            <tr>
-                <td class="px-6 py-4">
-                    {{-- (currentPage() - 1) * perPage + index --}}
-                    {{-- (1-1) * 10 + 1 = 1 --}}
-                    {{-- (2-1) * 10 + 1 = 11 --}}
-                    {{-- (3-1) * 10 + 1 = 21 --}}
-                    {{ ($departments->currentPage() - 1) * $departments->perPage() + $loop->iteration }}
-                </td>
-                <td class="px-6 py-4">{{ $department->name }}</td>
-                <td class="px-6 py-4">{{ $department->fest_type_name }}</td>
-                <td class="px-6 py-4" title="To Be Determined">{{ $department->events->count() > 0 ? $department->events->count() : 'TBD' }}</td>
-                <td class="px-6 py-4">{{ $department->is_active ? 'Ongoing' : 'Completed' }}</td>
-                <td class="px-6 py-4">
-                    <div class="flex gap-5 items-center">
-                        <x-link :typeoflink="'link'" href="{{ route('departments.show', $department->id) }}"
-                            class="text-blue-600 dark:text-blue-500 me-0">
-                            View
-                        </x-link>
-                        <button type="button" class="text-green-600 dark:text-green-500 cursor-pointer hover:underline me-0"
-                            @@click="departmentEditModal = true; 
+            @foreach ($departments as $department)
+                <tr>
+                    <td class="px-6 py-4">
+                        {{-- (currentPage() - 1) * perPage + index --}}
+                        {{-- (1-1) * 10 + 1 = 1 --}}
+                        {{-- (2-1) * 10 + 1 = 11 --}}
+                        {{-- (3-1) * 10 + 1 = 21 --}}
+                        {{ ($departments->currentPage() - 1) * $departments->perPage() + $loop->iteration }}
+                    </td>
+                    <td class="px-6 py-4">{{ $department->name }}</td>
+                    <td class="px-6 py-4">{{ $department->fest_type_name }}</td>
+                    <td class="px-6 py-4" title="To Be Determined">
+                        {{ $department->events->count() > 0 ? $department->events->count() : 'TBD' }}</td>
+                    <td class="px-6 py-4">{{ $department->is_active ? 'Ongoing' : 'Completed' }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-5 items-center">
+                            <x-link :typeoflink="'link'" href="{{ route('departments.show', $department->id) }}"
+                                class="text-blue-600 dark:text-blue-500 me-0">
+                                View
+                            </x-link>
+
+                            @can('update', $department)
+                                {{-- Prevent admin from editing their own department --}}
+                                <button type="button"
+                                    class="text-green-600 dark:text-green-500 cursor-pointer hover:underline me-0"
+                                    @@click="departmentEditModal = true; 
                             selected = { 
                                 id: '{{ $department->id }}', 
                                 name: '{{ $department->name }}', 
@@ -68,34 +82,39 @@
                                 headEmail: '{{ $department->head_email }}', 
                                 headPhone: '{{ $department->head_phone }}', 
                                 festType: '{{ $department->fest_type }}', 
-                                isActive: '{{ $department->is_active}}', 
+                                isActive: '{{ $department->is_active }}', 
                                 noOfEvents: '{{ $department->events->count() }}'
                             }">
-                            Edit
-                        </button>
-                        <form action="{{ route('departments.destroy', $department->id) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <x-link :typeoflink="'button'"
-                                onclick="return confirm('Are you sure? This action cannot be undone.')"
-                                class="text-red-600 dark:text-red-500">
-                                Delete
-                            </x-link>
-                        </form>
-                    </div>
-                </td>
-            </tr>
+                                    Edit
+                                </button>
+                            @endcan
+
+                            @can('delete', $department)
+                                {{-- Prevent admin from deleting their own department --}}
+                                <form action="{{ route('departments.destroy', $department->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-link :typeoflink="'button'"
+                                        onclick="return confirm('Are you sure? This action cannot be undone.')"
+                                        class="text-red-600 dark:text-red-500">
+                                        Delete
+                                    </x-link>
+                                </form>
+                            @endcan
+                        </div>
+                    </td>
+                </tr>
             @endforeach
 
-            @if($departments->isEmpty())
-            <tr class="bg-white dark:bg-gray-800 text-nowrap">
-                <td class="px-6 py-4 w-0">No department records found</td>
-                <td class="px-6 py-4"> </td>
-                <td class="px-6 py-4"> </td>
-                <td class="px-6 py-4"> </td>
-                <td class="px-6 py-4"> </td>
-                <td class="px-6 py-4"> </td>
-            </tr>
+            @if ($departments->isEmpty())
+                <tr class="bg-white dark:bg-gray-800 text-nowrap">
+                    <td class="px-6 py-4 w-0">No department records found</td>
+                    <td class="px-6 py-4"> </td>
+                    <td class="px-6 py-4"> </td>
+                    <td class="px-6 py-4"> </td>
+                    <td class="px-6 py-4"> </td>
+                    <td class="px-6 py-4"> </td>
+                </tr>
             @endif
         </x-data-table>
 
@@ -167,8 +186,11 @@
                 </div>
 
                 <div class="flex justify-end space-x-2 mt-4">
-                    <button type="button" @@click="departmentEditModal = false" onclick="window.location='{{ route('departments.index') }}'" class="px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Cancel</button>
-                    <button type="submit" class="px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Save</button>
+                    <button type="button" @@click="departmentEditModal = false"
+                        onclick="window.location='{{ route('departments.index') }}'"
+                        class="px-3 py-2 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Cancel</button>
+                    <button type="submit"
+                        class="px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Save</button>
                 </div>
             </form>
         </x-modal>

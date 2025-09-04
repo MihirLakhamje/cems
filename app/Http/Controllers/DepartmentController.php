@@ -5,21 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Step 1: Fetch all departments with pagination
+        $searchDepartment = $request->query('search');
+        if($searchDepartment) {
+            $departments = Department::where('name', 'LIKE', "%{$searchDepartment}%")->paginate(8);
+        }
+        else {
         $departments = Department::latest()->paginate(8);
+        }   
 
         // Step 2: Return the view with the departments data
         return view('departments.index', [
             'departments' => $departments,
+            'search' => $searchDepartment
         ]);
+
+
     }
 
     /**
@@ -27,6 +36,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Department::class);
         return view('departments.create');
     }
 
@@ -35,6 +45,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Department::class);
         //STEP 1: Validate the request data
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:departments,name', 'min:1'],
@@ -70,6 +81,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
+        Gate::authorize('view', $department);
         return view('departments.show', [
             'department' => $department,
         ]);
@@ -88,6 +100,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        Gate::authorize('update', $department);
         // Step 1: Validate the request data
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'min:1'],
@@ -126,6 +139,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
+        Gate::authorize('delete', $department);
         $department->delete();
         return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
     }

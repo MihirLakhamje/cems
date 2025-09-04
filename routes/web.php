@@ -27,14 +27,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/stats', [UserController::class, 'stats'])->name('users.stats');
 
     Route::prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/', [UserController::class, 'index', 'search' => request('search')])->name('users.index');
         Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
         Route::patch('/{user}/assign-role', [UserController::class, 'assign_role'])->name('users.assign_role');
         Route::delete('/{user}/delete', [UserController::class, 'delete'])->name('users.destroy');
     });
 
     Route::prefix('departments')->group(function () {
-        Route::get('/', [DepartmentController::class, 'index'])->name('departments.index');
+        Route::get('/', [DepartmentController::class, 'index', 'search' => request('search')])->name('departments.index');
         Route::get('/create', [DepartmentController::class, 'create'])->name('departments.create');
         Route::post('/store', [DepartmentController::class, 'store'])->name('departments.store');
         Route::get('/{department}', [DepartmentController::class, 'show'])->name('departments.show');
@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('events')->group(function () {
-        Route::get('/', [EventController::class, 'index'])->name('events.index');
+        Route::get('/', [EventController::class, 'index', 'search' =>request('search')])->name('events.index');
         Route::get('/create', [EventController::class, 'create'])->name('events.create');
         Route::post('/', [EventController::class, 'store'])->name('events.store');
         Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
@@ -60,6 +60,5 @@ Route::middleware(['auth'])->group(function () {
 
         // organizer / admin
         Route::get('/event/{event}', [EventUserController::class, 'index'])->name('registrations.index');
-        Route::patch('/{eventUser}/status', [EventUserController::class, 'updateStatus'])->name('registrations.update_status');
     });
 });

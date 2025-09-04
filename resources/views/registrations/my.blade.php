@@ -10,48 +10,60 @@
     <x-slot:header>Registered Events</x-slot:header>
 
     <section>
-        <div class="container">
-            <h1 class="mb-4">My Registered Events</h1>
+        
 
-            @if ($registrations->isEmpty())
-                <p>You have not registered for any events yet.</p>
-            @else
-                <div class="row">
-                    @foreach ($registrations as $reg)
-                        @php
-                            $event = $reg->event;
-                        @endphp
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100">
-                                @if ($event->image)
-                                    <img src="{{ asset('storage/' . $event->image) }}" class="card-img-top"
-                                        alt="{{ $event->name }}">
-                                @endif
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $event->name }}</h5>
-                                    <p class="card-text">{{ Str::limit($event->description, 100) }}</p>
-                                    <p><strong>Start:</strong> {{ $event->start_date }}</p>
-                                    <p><strong>End:</strong> {{ $event->end_date }}</p>
-                                    <p><strong>Location:</strong> {{ $event->location }}</p>
-                                    <p><strong>Fees:</strong> ₹{{ $event->fees }}</p>
-                                    <p><strong>Capacity:</strong> {{ $event->capacity }}</p>
-                                    <p><strong>Status:</strong> {{ ucfirst($reg->status) }}</p>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="{{ route('events.show', $event) }}"
-                                        class="btn btn-primary btn-sm">View</a>
-                                    <form action="{{ route('registrations.destroy', $event) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm">Cancel</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
+        <x-data-table>
+            <x-slot:column>
+                <th class="px-6 py-3">Sr. No.</th>
+                <th class="px-6 py-3">Name</th>
+                <th class="px-6 py-3">Action</th>
+            </x-slot:column>
+
+            @foreach($events as $event)
+            <tr>
+                <td class="px-6 py-4">
+                    {{-- (currentPage() - 1) * perPage + index --}}
+                    {{-- (1-1) * 10 + 1 = 1 --}}
+                    {{-- (2-1) * 10 + 1 = 11 --}}
+                    {{-- (3-1) * 10 + 1 = 21 --}}
+                    {{ ($events->currentPage() - 1) * $events->perPage() + $loop->iteration }}
+                </td>
+                <td class="px-6 py-4">{{ $event->name }}</td>
+                <td class="px-6 py-4">
+                    <div class="flex gap-5 items-center">
+                        <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
+                            class="text-blue-600 dark:text-blue-500 me-0">
+                            View
+                        </x-link>
+                        <form action="{{ route('registrations.destroy', $event->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <x-link :typeoflink="'button'"
+                                onclick="return confirm('Are you sure? This action cannot be undone.')"
+                                class="text-red-600 dark:text-red-500">
+                                Cancel Registration
+                            </x-link>
+                        </form>
+                        
+                    </div>
+                </td>
+            </tr>
+            @endforeach
+
+            @if($events->isEmpty())
+            <tr class="bg-white dark:bg-gray-800 text-nowrap">
+                <td class="px-6 py-4 w-0">No event records found</td>
+                <td class="px-6 py-4"> </td>
+                <td class="px-6 py-4"> </td>
+            </tr>
             @endif
+        </x-data-table>
+
+
+
+        <div class="mt-4">
+            {{ $events->links() }}
         </div>
+
     </section>
 </x-layout>

@@ -16,6 +16,11 @@
             role: '{{ old('role') ?? '' }}',
             department_id: '{{ old('department_id') ?? '' }}',
         } }">
+
+        <div class="my-2">
+            <x-form-search :action="'/users'" :name="'search'" :placeholder="'Search user'"/>
+        </div>
+
         <x-data-table>
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>

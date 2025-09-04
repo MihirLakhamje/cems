@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,13 @@ class UserController extends Controller
 {
     public function home()
     {
-        return view('users.home');
+        $user_count = User::count(); // Get the total user count
+        $event_count = Event::count(); // Get the total event count
+        $department_count = Department::count(); // Get the total department count
+        return view('users.home', ['user_count' => $user_count,
+            'event_count' => $event_count,
+            'department_count' => $department_count]);
+
     }
 
     public function stats()
@@ -67,13 +74,22 @@ class UserController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(8);
         $departments = Department::latest('created_at')->get();
+        $searchUser = $request->query('search');
+        if($searchUser) {
+            $users = User::where('name', 'LIKE', "%{$searchUser}%")->paginate(8);
+        }
+        else {
+        $users = User::latest()->paginate(8);
+        }   
+
+        // Step 2: Return the view with the departments data
         return view('users.index', [
-            'users' => $users,
             'departments' => $departments,
+            'search' => $searchUser,
+            'users' => $users
         ]);
     }
 
@@ -83,6 +99,7 @@ class UserController extends Controller
         dd($user);
     }
 
+    
     public function assign_role(Request $request, User $user)
     {
         $request->validate([

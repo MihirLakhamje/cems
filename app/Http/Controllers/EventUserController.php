@@ -16,13 +16,11 @@ class EventUserController extends Controller
     public function index(Event $event)
     {
         try {
-            Gate::authorize('viewAny', [EventUser::class, $event]);
+            
 
-            $registrations = EventUser::with('user')
-                ->where('event_id', $event->id)
-                ->get();
-
-            return view('registrations.index', compact('event', 'registrations'));
+            $events = auth()->user()->events; // includes pivot data
+            dd($events);
+            // return view('registrations.index', compact('events', 'events'));
         } catch (Exception $e) {
             return back()->withErrors('Failed to fetch registrations.');
         }
@@ -45,14 +43,14 @@ class EventUserController extends Controller
 
             // Attach user to event (pivot table)
             $user->events()->attach($event->id, [
-                'status' => 'pending', 
+                'status' => 'confirmed', 
             ]);
 
-            return redirect()->back()->with('success', 'Successfully registered for the event!');
+            return redirect()->route('registrations.my')->with('success', 'Successfully registered for the event!');
         } catch (\Exception $e) {
             \Log::error('Event registration failed: ' . $e->getMessage());
-            // dd($e->getMessage());
-            return redirect()->back()->with('error', 'Failed to register for the event. Please try again.');
+            dd($e->getMessage());
+            // return redirect()->back()->with('error', 'Failed to register for the event. Please try again.');
         }
     }
 
@@ -82,11 +80,9 @@ class EventUserController extends Controller
     public function myRegistrations()
     {
         try {
-            $registrations = EventUser::with('event')
-                ->where('user_id', Auth::id())
-                ->get();
+            $events = Auth::user()->events()->paginate(8); // includes pivot data
 
-            return view('registrations.my', compact('registrations'));
+            return view('registrations.my', compact('events'));
         } catch (Exception $e) {
             return back()->withErrors('Failed to fetch your registrations.');
         }
