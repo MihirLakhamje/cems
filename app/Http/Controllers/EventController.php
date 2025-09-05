@@ -19,7 +19,7 @@ class EventController extends Controller
             $searchEvent = $request->query('search');
             $eventsQuery = Event::with('department');
             if ($searchEvent) {
-                $events = $eventQuery->whereHas(
+                $events = $eventsQuery->whereHas(
                     'department',
                     function ($query) use ($searchEvent) {
                         $query->where('name', 'like', "%$searchEvent%");
