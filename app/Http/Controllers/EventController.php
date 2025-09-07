@@ -17,19 +17,12 @@ class EventController extends Controller
 
         try {
             $searchEvent = $request->query('search');
-            $eventsQuery = Event::with('department');
-            if ($searchEvent) {
-                $events = $eventsQuery->whereHas(
-                    'department',
-                    function ($query) use ($searchEvent) {
-                        $query->where('name', 'like', "%$searchEvent%");
-                    }
-                )->paginate(8);
-            }
-            else {
-                $events = $eventsQuery->latest()->paginate(8);
-            }
-
+        if($searchEvent) {
+            $events = Event::where('name', 'LIKE', "%{$searchEvent}%")->paginate(8);
+        }
+        else {
+            $events = Event::latest()->paginate(8);
+        }
             // Step 2: Return the view with the departments data
             return view('events.index', [
                 'events' => $events,
