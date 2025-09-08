@@ -76,7 +76,7 @@
 
     {{-- Registered Users Table --}}
     @can('eventUsers', $event)
-    <section class="mt-10 bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6">
+    <section class="mt-5">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Registered Users</h2>
             <x-data-table >
                 <x-slot:column >

@@ -45,7 +45,7 @@
 
 
     {{-- Department Events --}}
-        <section class="mt-4 bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6">
+        <section class="mt-5">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Events by this Department</h2>
 
             <div class="overflow-x-auto">
@@ -72,13 +72,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="5" class="px-6 py-4 text-start text-gray-500">
                                 No events found for this department
                             </td>
-                            <td class="px-6 py-4"> </td>
-                            <td class="px-6 py-4"> </td>
-                            <td class="px-6 py-4"> </td>
-                            <td class="px-6 py-4"> </td>
                         </tr>
                     @endforelse
                 </x-data-table>

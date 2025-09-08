@@ -54,7 +54,7 @@
 
         @if (!auth()->user()->events()->where('event_id', $event->id)->exists())
             
-        <form action="{{ route('events.register', $event->id) }}" method="POST">
+        <form action="{{ route('registrations.store', $event->id) }}" method="POST">
             @csrf
             <div class="flex items-center gap-2">
                 <button type="submit" onclick="return confirm('Are you sure? You want to register for this event.')"

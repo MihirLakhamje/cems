@@ -47,7 +47,7 @@
                     <td class="px-6 py-4">{{ $event->start_date->format('d/m/Y') }}</td>
                     <td class="px-6 py-4">{{ $event->end_date->format('d/m/Y') }}</td>
                     <td class="px-6 py-4">{{ $event->department->name }}</td>
-                    <td class="px-6 py-4">Rs.{{ $event->fees }}</td>
+                    <td class="px-6 py-4">₹ {{ $event->fees }}</td>
                     <td class="px-6 py-4">
                         <div class="flex gap-5 items-center">
                             <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
