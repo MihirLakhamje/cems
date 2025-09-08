@@ -1,4 +1,15 @@
-<div class="overflow-x-auto shadow-md sm:rounded-lg">
+<div class="overflow-x-auto shadow-md rounded-lg">
+    <div @class([
+        'flex flex-column sm:flex-row flex-wrap items-center justify-between p-2 bg-gray-100 dark:bg-gray-900',
+        'gap-2' => !empty(trim($button ?? '')) && !empty(trim($search ?? ''))
+    ])>
+        <div class="flex flex-wrap">
+            {{ $button ?? '' }}
+        </div>
+        <div class="flex-grow max-w-sm">
+            {{ $search ?? '' }}
+        </div>
+    </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-900 dark:text-gray-400">
             <tr>

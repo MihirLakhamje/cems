@@ -320,7 +320,7 @@
                     {{ $header ?? '' }}
                 </h2>
                 @if (isset($header))
-                    <hr class="h-px my-2 bg-gray-100 border-0 dark:bg-gray-700">
+                    <hr class="h-px my-1 bg-gray-100 border-0 dark:bg-gray-700">
                 @endif
             </header>
             <main class="mt-2 ">

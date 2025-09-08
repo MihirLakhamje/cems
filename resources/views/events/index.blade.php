@@ -10,22 +10,20 @@
     <x-slot:header>Events</x-slot:header>
 
     <section class="flex flex-col gap-2">
-        <div class="flex space-x-1 items-center justify-between">
-            @can('create', App\Models\Event::class)
-                <div class="my-2">
+        <x-data-table>
+            <x-slot:button>
+                @can('create', App\Models\Event::class)
                     <a href="{{ route('events.create') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-5 sm:py-2.5 px-3 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2.5 px-2 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
                         Add Event
                     </a>
-                </div>
-            @endcan
+                @endcan
+            </x-slot:button>
 
-            <div class="my-2 flex-grow max-w-sm">
+            <x-slot:search>
                 <x-form-search :action="'/events'" :name="'search'" :placeholder="'Search event'" />
-            </div>
-        </div>
-
-        <x-data-table>
+            </x-slot:search>
+            
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>
                 <th class="px-6 py-3">Name</th>
@@ -57,7 +55,8 @@
                                 View
                             </x-link>
                             @if (auth()->user()->role === 'user' && in_array($event->id, $registeredEventIds))
-                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Registered</span>
+                                <span
+                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Registered</span>
                             @endif
                             <div x-data="{
                                 eventEditModal: @json($errors->any()),
@@ -238,7 +237,7 @@
 
 
 
-        <div class="mt-4">
+        <div class="mt-2">
             {{ $events->links() }}
         </div>
     </section>

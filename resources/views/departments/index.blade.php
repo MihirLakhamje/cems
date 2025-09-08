@@ -23,23 +23,20 @@
         }
     }">
 
-        <div class="flex space-x-1 items-center justify-between">
-            
-            @can('create', App\Models\Department::class)
-                <div class="my-2">
+        <x-data-table>
+            <x-slot:button>
+                @can('create', App\Models\Department::class)
                     <a href="{{ route('departments.create') }}"
                         class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-5 sm:py-2.5 px-3 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
                         Add department
                     </a>
-                </div>
-            @endcan
+                @endcan
+            </x-slot:button>
 
-            <div class="my-2 flex-grow max-w-sm">
+            <x-slot:search>
                 <x-form-search :action="'/departments'" :name="'search'" :placeholder="'Search department'" />
-            </div>
-        </div>
+            </x-slot:search>
 
-        <x-data-table>
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>
                 <th class="px-6 py-3">Name</th>
@@ -195,7 +192,7 @@
             </form>
         </x-modal>
 
-        <div class="mt-4">
+        <div class="mt-2">
             {{ $departments->links() }}
         </div>
     </section>

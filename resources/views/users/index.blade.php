@@ -17,11 +17,11 @@
             department_id: '{{ old('department_id') ?? '' }}',
         } }">
 
-        <div class="my-2 max-w-sm">
-            <x-form-search :action="'/users'" :name="'search'" :placeholder="'Search user'"/>
-        </div>
-
+        
         <x-data-table>
+            <x-slot:search>
+                <x-form-search :action="'/users'" :name="'search'" :placeholder="'Search user'" />
+            </x-slot:search>
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>
                 <th class="px-6 py-3">Name</th>
@@ -113,7 +113,7 @@
             </form>
         </x-modal>
 
-        <div class="mt-4">
+        <div class="mt-2">
             {{ $users->links() }}
         </div>
     </section>

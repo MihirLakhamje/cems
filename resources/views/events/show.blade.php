@@ -78,21 +78,16 @@
     @can('eventUsers', $event)
     <section class="mt-10 bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Registered Users</h2>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
-                <thead class="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
-                    <tr>
+            <x-data-table >
+                <x-slot:column >
                         <th class="px-6 py-3">Sr. No.</th>
                         <th class="px-6 py-3">Name</th>
                         <th class="px-6 py-3">Email</th>
                         <th class="px-6 py-3">Mobile No.</th>
                         <th class="px-6 py-3">College Name</th>
-                    </tr>
-                </thead>
-                <tbody>
+                </x-slot:column>
                     @forelse ($users as $user)
-                        <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <tr>
                             <td class="px-6 py-4">
                                 {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }}
                             </td>
@@ -103,14 +98,12 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="5" class="px-6 py-4 text-start">
                                 No user records found
                             </td>
                         </tr>
                     @endforelse
-                </tbody>
-            </table>
-        </div>
+            </x-data-table>
 
         <div class="mt-4">
             {{ $users->links() }}
