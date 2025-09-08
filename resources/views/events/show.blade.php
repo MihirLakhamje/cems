@@ -47,7 +47,7 @@
 
                 {{-- Registration logic --}}
                 @auth
-                    @can('view', $event)
+                    @can('create', App\Models\EventUser::class)
                         <div class="mt-6">
                             @if ($event->users->contains(auth()->id()))
                                 <form action="{{ route('registrations.destroy', $event) }}" method="POST">

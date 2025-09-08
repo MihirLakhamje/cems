@@ -21,9 +21,6 @@ class EventPolicy
      */
     public function view(User $user, Event $event): bool
     {
-        if ($user->role === 'user') {
-            return true;
-        }
         return false;
     }
 
