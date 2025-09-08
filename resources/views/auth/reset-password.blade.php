@@ -1,17 +1,10 @@
 <x-layout>
-    <x-slot:title>Login | CEMS</x-slot:title>
-    <x-slot:metaDescription>Log in to your account</x-slot:metaDescription>
+    <x-slot:metaDescription>Reset your password</x-slot:metaDescription>
 
-    <form class="max-w-sm mx-auto mt-24" action="{{ route('login.store') }}" method="POST">
-        <h1 class="text-2xl font-bold mb-5 dark:text-gray-200">
-            Welcome, back!
-        </h1>
+    <form class="max-w-sm mx-auto mt-4" action="{{ route('password.change') }}" method="POST">
+        <h1 class="text-2xl font-bold mb-5 dark:text-gray-200">Reset your password</h1>
         @csrf
-        @if (session('status'))
-            <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                {{ session('status') }}
-            </p>
-        @endif
+        <input type="hidden" name="token" value="{{ $token }}">
         <div class="mb-5">
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
             <input type="email" id="email" name="email"
@@ -26,15 +19,17 @@
                 placeholder="atlease 6 characters" required />
             <x-form-error name="password" />
         </div>
-        <div class="mb-5 flex justify-between">
-            <span><a href="{{ route('password.request') }}"
-                    class="text-sm text-gray-700 hover:underline dark:text-gray-400">Forgot password?</a></span>
-            <span><a href="{{ route('register') }}"
-                    class="text-sm text-gray-700 hover:underline dark:text-gray-400">Don't have an account?</a></span>
+        <div class="mb-5">
+            <label for="password_confirmation"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
+                password</label>
+            <input type="password" id="password_confirmation" name="password_confirmation"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required />
+            <x-form-error name="password_confirmation" />
         </div>
         <button type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Continue
-        </button>
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Continue</button>
+
     </form>
 </x-layout>

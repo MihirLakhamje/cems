@@ -3,7 +3,9 @@
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventUserController;
+use App\Http\Controllers\ForgetPasswordController;
 use App\Http\Controllers\RegisterUserController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +18,12 @@ Route::get('/register', [RegisterUserController::class, 'create'])->name('regist
 Route::post('/register', [RegisterUserController::class, 'store'])->name('register.store');
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store'])->name('login.store');
+
+Route::get('forgot-password', [ForgetPasswordController::class, 'showForgotForm'])->name('password.request');
+Route::post('forgot-password', [ForgetPasswordController::class, 'sendResetLink'])->name('password.email');
+
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('update-password', [ResetPasswordController::class, 'resetPassword'])->name('password.change');
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
