@@ -17,16 +17,21 @@ class EventController extends Controller
 
         try {
             $searchEvent = $request->query('search');
-        if($searchEvent) {
-            $events = Event::where('name', 'LIKE', "%{$searchEvent}%")->paginate(8);
-        }
-        else {
-            $events = Event::latest()->paginate(8);
-        }
+            if ($searchEvent) {
+                $events = Event::where('name', 'LIKE', "%{$searchEvent}%")->paginate(8);
+            } else {
+                $events = Event::latest()->paginate(8);
+            }
+            $user = auth()->user();
+
+            // Get IDs of events the user has registered for
+            $registeredEventIds = $user ? $user->events()->pluck('event_id')->toArray() : [];
+
             // Step 2: Return the view with the departments data
             return view('events.index', [
                 'events' => $events,
-                'search' => $searchEvent
+                'search' => $searchEvent,
+                'registeredEventIds' => $registeredEventIds,
             ]);
         } catch (\Exception $e) {
             \Log::error('Fetching events failed: ' . $e->getMessage());

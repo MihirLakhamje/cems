@@ -56,6 +56,9 @@
                                 class="text-blue-600 dark:text-blue-500 me-0">
                                 View
                             </x-link>
+                            @if (auth()->user()->role === 'user' && in_array($event->id, $registeredEventIds))
+                                <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Registered</span>
+                            @endif
                             <div x-data="{
                                 eventEditModal: @json($errors->any()),
                                 selected: {
