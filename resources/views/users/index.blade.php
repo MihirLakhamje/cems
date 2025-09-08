@@ -17,7 +17,7 @@
             department_id: '{{ old('department_id') ?? '' }}',
         } }">
 
-        <div class="my-2">
+        <div class="my-2 max-w-sm">
             <x-form-search :action="'/users'" :name="'search'" :placeholder="'Search user'"/>
         </div>
 

@@ -10,18 +10,19 @@
     <x-slot:header>Events</x-slot:header>
 
     <section class="flex flex-col gap-2">
+        <div class="flex space-x-1 items-center justify-between">
+            @can('create', App\Models\Event::class)
+                <div class="my-2">
+                    <a href="{{ route('events.create') }}"
+                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-5 sm:py-2.5 px-3 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        Add Event
+                    </a>
+                </div>
+            @endcan
 
-        @can('create', App\Models\Event::class)
-            <div class="my-2">
-                <a href="{{ route('events.create') }}"
-                    class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
-                    Add Event
-                </a>
+            <div class="my-2 flex-grow max-w-sm">
+                <x-form-search :action="'/events'" :name="'search'" :placeholder="'Search event'" />
             </div>
-        @endcan
-
-        <div class="my-2">
-            <x-form-search :action="'/events'" :name="'search'" :placeholder="'Search event'" />
         </div>
 
         <x-data-table>

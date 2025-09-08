@@ -1,11 +1,11 @@
 @props(['action' => '/', 'name' => 'search', 'placeholder' => 'Search'])
-<div class="max-w-md w-full">
+<div class="w-full">
   <form action="{{ $action }}" method="get">
-    <div class="flex w-sm">
+    <div class="flex">
       <label for="{{$name}}" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
       <div class="relative w-full">
         <input type="search" id="{{$name}}"
-          class="block p-2 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+          class="block p-2 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
           placeholder="{{$placeholder}}" name="{{$name}}" required />
 
         <button type="submit"
