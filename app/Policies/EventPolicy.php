@@ -63,7 +63,7 @@ class EventPolicy
         ) {
             return true;
         }
-        
+
         if ($user->role === 'admin') {
             return true;
         }
@@ -89,5 +89,18 @@ class EventPolicy
     public function forceDelete(User $user, Event $event): bool
     {
         return false;
+    }
+
+    public function manageRegistrations(User $user, Event $event): bool
+    {
+        return $user->role === 'admin'
+            || ($user->role === 'organizer' && $event->department_id === $user->department_id);
+    }
+
+    public function registeration(User $user, Event $event): bool
+    {
+        return $user->role === 'user'
+            && now()->gte($event->start_date)
+            && (! $event->end_date || now()->lte($event->end_date));
     }
 }

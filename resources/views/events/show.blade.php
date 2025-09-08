@@ -37,8 +37,8 @@
                     <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $event->description }}</p>
 
                     <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                        <li><strong>Start Date:</strong> {{ $event->start_date }}</li>
-                        <li><strong>End Date:</strong> {{ $event->end_date }}</li>
+                        <li><strong>Start Date:</strong> {{ $event->start_date->format('d/m/Y') }}</li>
+                        <li><strong>End Date:</strong> {{ $event->end_date->format('d/m/Y') }}</li>
                         <li><strong>Location:</strong> {{ $event->location }}</li>
                         <li><strong>Fees:</strong> ₹{{ $event->fees }}</li>
                         <li><strong>Capacity:</strong> {{ $event->capacity }}</li>
@@ -47,7 +47,7 @@
 
                 {{-- Registration logic --}}
                 @auth
-                    @can('create', App\Models\EventUser::class)
+                    @can('registeration', $event)
                         <div class="mt-6">
                             @if ($event->users->contains(auth()->id()))
                                 <form action="{{ route('registrations.destroy', $event) }}" method="POST">

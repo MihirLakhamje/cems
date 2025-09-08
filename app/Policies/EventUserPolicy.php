@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Event;
 use App\Models\EventUser;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -27,10 +28,8 @@ class EventUserPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
-    {
-        return $user->role === 'user';
-    }
+    
+
 
     /**
      * Determine whether the user can update the model.
@@ -51,9 +50,5 @@ class EventUserPolicy
         return $user->id === auth()->id() || $user->role === 'admin';
     }
 
-    public function manageRegistrations(User $user, Event $event): bool
-    {
-        return $user->role === 'admin'
-            || ($user->role === 'organizer' && $event->department_id === $user->department_id);
-    }
+    
 }

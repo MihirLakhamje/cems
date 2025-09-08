@@ -33,6 +33,7 @@ class EventUserController extends Controller
     public function store(Request $request, Event $event)
     {
         try {
+            Gate::authorize('registeration', $event);
             $user = auth()->user();
 
             // Check if the user is already registered for the event
