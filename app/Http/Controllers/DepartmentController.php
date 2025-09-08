@@ -81,7 +81,6 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        Gate::authorize('view', $department);
         return view('departments.show', [
             'department' => $department,
         ]);

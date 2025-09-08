@@ -4,7 +4,7 @@
     <x-slot:header>Department Details</x-slot:header>
 
     {{-- Back button --}}
-    <div class="flex items-center gap-4 mb-6">
+    <div class="flex items-center gap-4 mb-4">
         <x-link :typeoflink="'link'" href="{{ route('departments.index') }}"
             class="text-blue-600 hover:underline dark:text-blue-400">
             ← Back
@@ -27,11 +27,13 @@
                     <li><strong>Fest Type:</strong> {{ $department->fest_type_name }}</li>
                     <li><strong>Status:</strong>
                         @if ($department->is_active)
-                            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-lg dark:bg-green-900 dark:text-green-300">
+                            <span
+                                class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-lg dark:bg-green-900 dark:text-green-300">
                                 Active
                             </span>
                         @else
-                            <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-lg dark:bg-red-900 dark:text-red-300">
+                            <span
+                                class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-lg dark:bg-red-900 dark:text-red-300">
                                 Inactive
                             </span>
                         @endif
@@ -41,29 +43,26 @@
         </div>
     </section>
 
-   
-    {{-- Department Events --}}
-    <section class="mt-10 bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Events by this Department</h2>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
-                <thead class="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
-                    <tr>
+    {{-- Department Events --}}
+        <section class="mt-4 bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Events by this Department</h2>
+
+            <div class="overflow-x-auto">
+                <x-data-table>
+                    <x-slot:column>
                         <th class="px-6 py-3">#</th>
                         <th class="px-6 py-3">Event Name</th>
                         <th class="px-6 py-3">Start Date</th>
                         <th class="px-6 py-3">End Date</th>
                         <th class="px-6 py-3">Location</th>
-                    </tr>
-                </thead>
-                <tbody>
+                    </x-slot:column>
                     @forelse ($department->events as $index => $event)
-                        <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <tr>
                             <td class="px-6 py-4">{{ $index + 1 }}</td>
                             <td class="px-6 py-4">
                                 <a href="{{ route('events.show', $event) }}"
-                                   class="text-blue-600 hover:underline dark:text-blue-400">
+                                    class="text-blue-600 hover:underline dark:text-blue-400">
                                     {{ $event->name }}
                                 </a>
                             </td>
@@ -82,8 +81,7 @@
                             <td class="px-6 py-4"> </td>
                         </tr>
                     @endforelse
-                </tbody>
-            </table>
-        </div>
-    </section>
+                </x-data-table>
+            </div>
+        </section>
 </x-layout>
