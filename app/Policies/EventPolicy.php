@@ -29,7 +29,7 @@ class EventPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->role === 'organizer') {
+        if ($user->role === 'organizer' && $user->department_id) {
             return true;
         }
         return false;
@@ -42,6 +42,7 @@ class EventPolicy
     {
         if (
             $user->role === 'organizer' &&
+            $user->department_id &&
             $event->department &&
             $event->department_id === $user->department_id
         ) {
@@ -94,7 +95,7 @@ class EventPolicy
     public function manageRegistrations(User $user, Event $event): bool
     {
         return $user->role === 'admin'
-            || ($user->role === 'organizer' && $event->department_id === $user->department_id);
+            || ($user->role === 'organizer' && $event->department && $user->department && $event->department_id === $user->department_id);
     }
 
     public function registeration(User $user, Event $event): bool

@@ -29,7 +29,7 @@ class DepartmentPolicy
             return true;
         }
         // Organizers can view their own department
-        if ($user->role === 'organizer' && $user->department->id === $department->id) {
+        if ($user->role === 'organizer' && $user->department && $user->department->id === $department->id) {
             return true;
         }
 
