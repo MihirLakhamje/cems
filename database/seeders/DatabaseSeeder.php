@@ -18,41 +18,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $departments = Department::factory(5)->create();
 
-        User::factory()->create([
-            'name' => 'mehek lakhamje',
-            'email' => 'lakhamjemehek@gmail.com',
-            'password' => '123456',
-            'role' => 'admin',
-            'phone' => '8369247992',
-            'college_name' => 'SIES College',
-        ]);
 
-        User::factory()->create([
-            'name' => 'mihir lakhamje',
-            'email' => 'lakhamjemihir@gmail.com',
-            'password' => '123456',
-            'role' => 'user',
-            'phone' => '8369247996',
-            'college_name' => 'SIES College',
-        ]);
-
-        User::factory()->create([
-            'name' => 'mansi lakhamje',
-            'email' => 'lakhamjemansi@gmail.com',
-            'password' => '123456',
-            'role' => 'organizer',
-            'phone' => '8369247994',
-            'college_name' => 'SIES College',
-        ]);
-
-        User::factory()->count(10)->create([
-            'department_id' => fn() => $departments->random()->id,
-            'role' => 'organizer',
-        ]);
-        User::factory()->count(10)->create([
-            'department_id' => null, // Users without a department
-            'role' => 'user',
-        ]);
 
         // Create Departments
         $cs = Department::factory()->create([
@@ -109,12 +75,99 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        // Attach Events
+        User::factory()->create([
+            'name' => 'mehek lakhamje',
+            'email' => 'lakhamjemehek@gmail.com',
+            'password' => '123456',
+            'role' => 'admin',
+            'phone' => '8369247992',
+            'college_name' => 'SIES College',
+        ]);
+
+        User::factory()->create([
+            'name' => 'mihir lakhamje',
+            'email' => 'lakhamjemihir@gmail.com',
+            'password' => '123456',
+            'role' => 'user',
+            'phone' => '8369247996',
+            'college_name' => 'SIES College',
+        ]);
+
+        User::factory()->create([
+            'department_id' => $it->id,
+            'name' => 'mansi lakhamje',
+            'email' => 'lakhamjemansi@gmail.com',
+            'password' => '123456',
+            'role' => 'organizer',
+            'phone' => '8369247994',
+            'college_name' => 'SIES College',
+        ]);
+
+        User::factory()->count(5)->create([
+            'department_id' => fn() => $departments->random()->id,
+            'role' => 'organizer',
+        ]);
+        User::factory()->count(10)->create([
+            'department_id' => null, // Users without a department
+            'role' => 'user',
+        ]);
+
+        // Attach Events 
+        Event::factory()->create([
+            'name' => 'Iterationz',
+            'description' => 'Annual tech fest of IT department.',
+            'start_date' => '2025-09-05 10:00:00',
+            'end_date' => '2025-09-07 18:00:00',
+            'location' => 'Auditorium',
+            'fees' => 100,
+            'department_id' => $it->id,
+        ]);
+
+        Event::factory()->create([
+            'name' => 'Cypher',
+            'description' => 'Coding competition for all students.',
+            'start_date' => '2025-10-10 09:00:00',
+            'end_date' => '2025-10-10 17:00:00',
+            'location' => 'Computer Lab',
+            'fees' => 50,
+            'department_id' => $cs->id,
+        ]);
+
+        Event::factory()->create([
+            'name' => 'Cultural Fest',
+            'description' => 'Annual cultural fest of Cultural Association.',
+            'start_date' => '2025-09-15 10:00:00',
+            'end_date' => '2025-09-17 18:00:00',
+            'location' => 'Auditorium',
+            'fees' => 0,
+            'department_id' => $cultural->id,
+        ]);
+
+        Event::factory()->create([
+            'name' => 'Data Science Workshop',
+            'description' => 'Workshop on latest trends in Data Science.',
+            'start_date' => '2025-11-01 10:00:00',
+            'end_date' => '2025-11-01 16:00:00',
+            'location' => 'Room 101',
+            'fees' => 150,
+            'department_id' => $ds->id,
+        ]);
+
+        Event::factory()->create([
+            'name' => 'Vision 2025',
+            'description' => 'Annual college fest organized by Visions.',
+            'start_date' => '2025-12-05 10:00:00',
+            'end_date' => '2025-12-07 22:00:00',
+            'location' => 'College Grounds',
+            'fees' => 200,
+            'department_id' => $visions->id,
+        ]);
+
         Event::factory()->count(3)->create([
             'department_id' => $cs->id,
         ]);
 
-        Event::factory()->count(2)->create([
+        Event::factory()->count(5)->create([
             'department_id' => $it->id,
         ]);
 
