@@ -27,7 +27,7 @@
             <x-slot:button>
                 @can('create', App\Models\Department::class)
                     <a href="{{ route('departments.create') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-5 sm:py-2.5 px-3 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2 px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
                         Add department
                     </a>
                 @endcan
