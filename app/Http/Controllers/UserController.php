@@ -15,10 +15,11 @@ class UserController extends Controller
         $user_count = User::count(); // Get the total user count
         $event_count = Event::count(); // Get the total event count
         $department_count = Department::count(); // Get the total department count
-        return view('users.home', ['user_count' => $user_count,
+        return view('users.home', [
+            'user_count' => $user_count,
             'event_count' => $event_count,
-            'department_count' => $department_count]);
-
+            'department_count' => $department_count
+        ]);
     }
 
     public function stats()
@@ -50,9 +51,8 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->save();
-            
-            return redirect()->route('users.profile')->with('success', 'You have successfully updated your profile.');
 
+            return redirect()->route('users.profile')->with('success', 'You have successfully updated your profile.');
         } catch (Exception $e) {
             return redirect()->route('users.profile')->with('error', 'Something went wrong.');
         }
@@ -76,22 +76,51 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $departments = Department::latest('created_at')->get();
-        $searchUser = $request->query('search');
-        if($searchUser) {
-            $users = User::where('name', 'LIKE', "%{$searchUser}%")->paginate(8);
-        }
-        else {
-        $users = User::latest()->paginate(8);
-        }   
+        try {
+            $query = User::query();
 
-        // Step 2: Return the view with the departments data
-        return view('users.index', [
-            'departments' => $departments,
-            'search' => $searchUser,
-            'users' => $users
-        ]);
+            // Select only required columns
+            $query->select(['id', 'name', 'email', 'role', 'department_id', 'created_at']);
+
+            // 🔍 Search filter
+            if ($request->filled('search')) {
+                $query->where('name', 'LIKE', "%{$request->search}%");
+            }
+
+            // 🏢 Department assigned filter
+            if ($request->exists('department_assigned')) {
+                if ($request->department_assigned === 'yes') {
+                    $query->whereNotNull('department_id'); // Assigned
+                } elseif ($request->department_assigned === 'no') {
+                    $query->whereNull('department_id'); // Not assigned
+                }
+            }
+
+            // 🎭 Role filter (multiple checkboxes)
+            if ($request->filled('role')) {
+                $query->whereIn('role', $request->role);
+            }
+
+            // 📅 Order latest & paginate
+            $users = $query->with('department:id,name')
+                ->latest('created_at')
+                ->paginate(8)
+                ->withQueryString();
+
+            // Fetch departments for dropdowns
+            $departments = Department::select(['id', 'name'])->latest('created_at')->get();
+
+            return view('users.index', [
+                'users' => $users,
+                'departments' => $departments,
+                'search' => $request->search,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Fetching users failed: ' . $e->getMessage());
+            dd($e->getMessage());
+        }
     }
+
 
     public function show(User $user)
     {
@@ -99,7 +128,7 @@ class UserController extends Controller
         dd($user);
     }
 
-    
+
     public function assign_role(Request $request, User $user)
     {
         $request->validate([

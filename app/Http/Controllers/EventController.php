@@ -14,31 +14,53 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-
         try {
-            $searchEvent = $request->query('search');
-            if ($searchEvent) {
-                $events = Event::where('name', 'LIKE', "%{$searchEvent}%")->paginate(8);
-            } else {
-                $events = Event::latest()->paginate(8);
+            $query = Event::query();
+
+            // Select only required columns
+            $query->select(['id', 'name', 'start_date', 'end_date', 'fees', 'department_id']);
+
+            // Filters
+            if ($request->filled('search')) {
+                $query->where('name', 'LIKE', "%{$request->search}%");
             }
+            if ($request->filled('start_date')) {
+                $query->whereDate('start_date', '>=', $request->start_date);
+            }
+            if ($request->filled('end_date')) {
+                $query->whereDate('end_date', '<=', $request->end_date);
+            }
+            if ($request->input('owned') === '1' && auth()->check()) {
+                $query->where('department_id', auth()->user()->department_id);
+            }
+            if ($request->filled('fees_min')) {
+                $query->where('fees', '>=', $request->fees_min);
+            }
+            if ($request->filled('fees_max')) {
+                $query->where('fees', '<=', $request->fees_max);
+            }
+
             $user = auth()->user();
 
-            // Get IDs of events the user has registered for
-            $registeredEventIds = $user ? $user->events()->pluck('event_id')->toArray() : [];
+            $events = $query->with(['department:id,name'])
+                ->withCount(['users as is_registered' => function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                }])
+                ->orderBy('start_date', 'desc')
+                ->paginate(8)
+                ->withQueryString();
 
-            // Step 2: Return the view with the departments data
             return view('events.index', [
                 'events' => $events,
-                'search' => $searchEvent,
-                'registeredEventIds' => $registeredEventIds,
+                'search' => $request->search,
             ]);
         } catch (\Exception $e) {
             \Log::error('Fetching events failed: ' . $e->getMessage());
             dd($e->getMessage());
-            // return redirect()->back()->with('error', 'Failed to fetch events. Please try again.');
         }
     }
+
+
 
     /**
      * Show the form for creating a new resource.

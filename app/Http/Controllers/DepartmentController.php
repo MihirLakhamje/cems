@@ -14,22 +14,51 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-        $searchDepartment = $request->query('search');
-        if($searchDepartment) {
-            $departments = Department::where('name', 'LIKE', "%{$searchDepartment}%")->paginate(8);
+        try {
+            //code...
+            $query = Department::query();
+
+            // 🔍 Search
+            if ($request->filled('search')) {
+                $query->where('name', 'LIKE', "%{$request->search}%");
+            }
+
+            // 👤 Owned filter
+            if ($request->input('owned') === '1' && auth()->check()) {
+                $query->where('id', auth()->user()->department_id);
+            }
+
+            // 📌 Status filter (boolean)
+            if ($request->filled('is_active')) {
+                $query->where('is_active', (int) $request->is_active);
+            }
+
+            // 🎭 Type filter (multiple checkboxes)
+            if ($request->filled('type')) {
+                $query->whereIn('fest_type', $request->type);
+            }
+
+            // 📅 Order latest & paginate
+            $departments = $query
+                ->select(['id', 'name', 'is_active', 'fest_type', 'created_at'])
+                ->with([
+                    'events:id,department_id,name,start_date,end_date,fees'
+                ])
+                ->latest()
+                ->paginate(8);
+
+
+            return view('departments.index', [
+                'departments' => $departments,
+                'search' => $request->search,
+            ]);
+        } catch (\Exception $th) {
+            \Log::error('Fetching departments failed: ' . $th->getMessage());
+            dd($th->getMessage());
+            // return redirect()->back()->with('error', 'Failed to fetch departments.');
         }
-        else {
-        $departments = Department::latest()->paginate(8);
-        }   
-
-        // Step 2: Return the view with the departments data
-        return view('departments.index', [
-            'departments' => $departments,
-            'search' => $searchDepartment
-        ]);
-
-
     }
+
 
     /**
      * Show the form for creating a new resource.

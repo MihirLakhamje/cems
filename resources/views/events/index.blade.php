@@ -14,16 +14,112 @@
             <x-slot:button>
                 @can('create', App\Models\Event::class)
                     <a href="{{ route('events.create') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2.5 px-2 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2 px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
                         Add Event
                     </a>
                 @endcan
+
+                <!-- Filter Dropdown -->
+                <div>
+
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                        data-dropdown-placement="bottom-start"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button"><svg class="w-4 h-4 sm:w-5 sm:h-5 text-white-800 dark:text-gray-200"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
+                        </svg>
+
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdown"
+                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-xs dark:bg-gray-700 p-5">
+                        <form method="GET" action="{{ route('events.index') }}" class="space-y-3">
+                            
+                            <div>
+                                <label class="text-sm">Start Date</label>
+                                <input type="date" name="start_date" value="{{ request('start_date') }}"
+                                    class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="text-sm">End Date</label>
+                                <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                    class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white">
+                            </div>
+                            <div>
+                                <label for="view"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">View</label>
+                                <select id="view" name="owned"
+                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="">All</option>
+                                    <option value="1" @selected(request('owned') == '1')>Owned</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="fees"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fees</label>
+                                <div class="flex gap-2">
+                                    <input type="number" id="small-input" type="number" name="fees_min" value="{{ request('fees_min') }}" placeholder="Min ₹" id="fees_min"
+                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <input type="number" name="fees_max" value="{{ request('fees_max') }}"
+                                        placeholder="Max ₹"
+                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                {{-- Clear Filters --}}
+                                <a href="{{ route('events.index') }}"
+                                    class="text-sm px-3 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700">Clear
+                                    All</a>
+
+                                {{-- Apply Filters --}}
+                                <button type="submit"
+                                    class="text-sm px-3 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                                    Apply
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Active filter badges -->
+                <div class="flex flex-wrap gap-2">
+                    @foreach (['start_date' => 'Start', 'end_date' => 'End', 'owned' => 'View', 'fees_min' => 'Min Fees', 'fees_max' => 'Max Fees'] as $key => $label)
+                        @if (request($key))
+                            <a href="{{ request()->fullUrlWithQuery([$key => null]) }}"
+                                class="flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                <span>
+                                    {{ $label }}:
+                                    @if ($key === 'owned' && request($key) == '1')
+                                        Owned
+                                    @elseif (in_array($key, ['start_date', 'end_date']))
+                                        {{ \Carbon\Carbon::parse(request($key))->format('d/m/Y') }}
+                                    @elseif (in_array($key, ['fees_min', 'fees_max']))
+                                        ₹{{ request($key) }}
+                                    @else
+                                        {{ request($key) }}
+                                    @endif
+
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 ml-1 cursor-pointer"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+
             </x-slot:button>
 
             <x-slot:search>
                 <x-form-search :action="'/events'" :name="'search'" :placeholder="'Search event'" />
             </x-slot:search>
-            
+
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>
                 <th class="px-6 py-3">Name</th>
@@ -47,16 +143,18 @@
                     <td class="px-6 py-4">{{ $event->start_date->format('d/m/Y') }}</td>
                     <td class="px-6 py-4">{{ $event->end_date->format('d/m/Y') }}</td>
                     <td class="px-6 py-4">{{ $event->department->name }}</td>
-                    <td class="px-6 py-4">₹ {{ $event->fees }}</td>
+                    <td class="px-6 py-4">₹{{ $event->fees }}</td>
                     <td class="px-6 py-4">
                         <div class="flex gap-5 items-center">
                             <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
                                 class="text-blue-600 dark:text-blue-500 me-0">
                                 View
                             </x-link>
-                            @if (auth()->user()->role === 'user' && in_array($event->id, $registeredEventIds))
+                            @if (auth()->user()->role === 'user' && $event->is_registered)
                                 <span
-                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">Registered</span>
+                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                    Registered
+                                </span>
                             @endif
                             <div x-data="{
                                 eventEditModal: @json($errors->any()),
@@ -103,7 +201,8 @@
                                                     of
                                                     event</label>
 
-                                                <input type="text" name="name" id="name" x-model="selected.name"
+                                                <input type="text" name="name" id="name"
+                                                    x-model="selected.name"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Iterationz" />
                                                 <x-form-error name="name" />
@@ -177,7 +276,8 @@
                                                 <label for="fees"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fees</label>
 
-                                                <input type="text" name="fees" id="fees" x-model="selected.fees"
+                                                <input type="text" name="fees" id="fees"
+                                                    x-model="selected.fees"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Rs.500" />
                                                 <x-form-error name="fees" />
