@@ -37,8 +37,8 @@
                     <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $event->description }}</p>
 
                     <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                        <li><strong>Start Date:</strong> {{ $event->start_date->format('d/m/Y') }}</li>
-                        <li><strong>End Date:</strong> {{ $event->end_date->format('d/m/Y') }}</li>
+                        <li><strong>Registration Date:</strong> {{ $event->start_date->format('d/m/Y') }} to {{ $event->end_date->format('d/m/Y') }}</li>
+                        <li><strong>Event Date:</strong> {{ $event->event_start_date->format('d/m/Y') }} to {{ $event->event_end_date->format('d/m/Y') }} </li>
                         <li><strong>Location:</strong> {{ $event->location }}</li>
                         <li><strong>Fees:</strong> ₹{{ $event->fees }}</li>
                         <li><strong>Capacity:</strong> {{ $event->capacity }}</li>
