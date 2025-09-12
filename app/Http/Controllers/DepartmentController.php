@@ -40,7 +40,7 @@ class DepartmentController extends Controller
 
             // 📅 Order latest & paginate
             $departments = $query
-                ->select(['id', 'name', 'is_active', 'fest_type', 'created_at'])
+                ->select(['id', 'name', 'is_active', 'fest_type', 'head_name', 'head_email', 'head_phone', 'created_at'])
                 ->with([
                     'events:id,department_id,name,start_date,end_date,fees'
                 ])
