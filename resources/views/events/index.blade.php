@@ -21,7 +21,6 @@
 
                 <!-- Filter Dropdown -->
                 <div>
-
                     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
                         data-dropdown-placement="bottom-start"
                         class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -31,23 +30,52 @@
                             <path
                                 d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
                         </svg>
-
                     </button>
 
                     <!-- Dropdown menu -->
                     <div id="dropdown"
                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-xs dark:bg-gray-700 p-5">
                         <form method="GET" action="{{ route('events.index') }}" class="space-y-3">
-
+                            <!-- Registration Duration -->
                             <div>
-                                <label class="text-sm">Start Date</label>
-                                <input type="date" name="start_date" value="{{ request('start_date') }}"
-                                    class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration
+                                    Duration</div>
+                                <div class="flex flex-col gap-1">
+                                    <div>
+                                        <input type="date" name="reg_start_date"
+                                            value="{{ request('reg_start_date') }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                            placeholder="Start date">
+                                    </div>
+                                    <span class="self-center mx-2 text-gray-500">to</span>
+                                    <div>
+                                        <input type="date" name="reg_end_date"
+                                            value="{{ request('reg_end_date') }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                            placeholder="End date">
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- Event Duration -->
                             <div>
-                                <label class="text-sm">End Date</label>
-                                <input type="date" name="end_date" value="{{ request('end_date') }}"
-                                    class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white">
+                                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
+                                    Duration</div>
+                                <div class="flex flex-col gap-1">
+                                    <div>
+                                        <input type="date" name="event_start_date"
+                                            value="{{ request('event_start_date') }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                            placeholder="Start date">
+                                    </div>
+                                    <span class="self-center mx-2 text-gray-500">to</span>
+                                    <div>
+                                        <input type="date" name="event_end_date"
+                                            value="{{ request('event_end_date') }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                            placeholder="End date">
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label for="view"
@@ -145,7 +173,8 @@
                         {{ $event->start_date->format('d/m/y') }} - {{ $event->end_date->format('d/m/y') }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $event->event_start_date->format('d/m/y') }} - {{ $event->event_end_date->format('d/m/y') }}
+                        {{ $event->event_start_date->format('d/m/y') }} -
+                        {{ $event->event_end_date->format('d/m/y') }}
                     </td>
                     <td class="px-6 py-4">{{ $event->department->name }}</td>
                     <td class="px-6 py-4">₹{{ $event->fees }}</td>
@@ -171,10 +200,11 @@
                                         description: '{{ old('description') ?? '' }}',
                                         startDate: '{{ old('start_date') ?? '' }}',
                                         endDate: '{{ old('end_date') ?? '' }}',
+                                        eventStartDate: '{{ old('start_date') ?? '' }}',
+                                        eventEndDate: '{{ old('end_date') ?? '' }}',
                                         location: '{{ old('location') ?? '' }}',
                                         image: '{{ old('image') ?? '' }}',
                                         fees: '{{ old('fees') ?? '' }}',
-                                        capacity: '{{ old('capacity') ?? '' }}'
                                     }
                                 }">
 
@@ -187,10 +217,11 @@
                                     description: '{{ $event->description }}',
                                     startDate: '{{ $event->start_date->format('d/m/Y') }}',
                                     endDate: '{{ $event->end_date->format('d/m/Y') }}',
+                                    eventStartDate: '{{ $event->event_start_date->format('d/m/Y') }}',
+                                    eventEndDate: '{{ $event->event_end_date->format('d/m/Y') }}',
                                     location: '{{ $event->location }}',
                                     image: '{{ $event->image }}',
-                                    fees: '{{ $event->fees }}',
-                                    capacity: '{{ $event->capacity }}'}">
+                                    fees: '{{ $event->fees }}'}">
                                         Edit
                                     </button>
                                     <!-- Modal -->
@@ -206,7 +237,8 @@
                                                     of
                                                     event</label>
 
-                                                <input type="text" name="name" id="name" x-model="selected.name"
+                                                <input type="text" name="name" id="name"
+                                                    x-model="selected.name"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Iterationz" />
                                                 <x-form-error name="name" />
@@ -226,43 +258,49 @@
                                             </div>
                                             <div>
                                                 <label for="datepicker-range-start"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration
-                                                    of registration</label>
-                                                <div id="date-range-picker" date-rangepicker class="flex items-center">
-                                                    <div class="relative">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="currentColor" viewBox="0 0 20 20">
-                                                                <path
-                                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <input datepicker datepicker-format="dd/mm/yyyy"
-                                                            id="datepicker-range-start" name="start_date" type="text"
-                                                            x-model="selected.startDate"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                            placeholder="date start">
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration
+                                                    Duration</label>
+                                                <div id="date-range-picker" date-rangepicker
+                                                    class="flex items-center justify-between gap-2">
+                                                    <div class="w-full">
+                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start"
+                                                            x-model="selected.startDate" name="start_date" type="text"
+                                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="Start date">
                                                         <x-form-error name="start_date" />
                                                     </div>
-                                                    <span class="mx-4 text-gray-500">to</span>
-                                                    <div class="relative">
-                                                        <div
-                                                            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="currentColor" viewBox="0 0 20 20">
-                                                                <path
-                                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                            </svg>
-                                                        </div>
-                                                        <input datepicker datepicker-format="dd/mm/yyyy"
-                                                            id="datepicker-range-end" name="end_date" type="text"
-                                                            x-model="selected.endDate"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                            placeholder="Select date end">
+                                                    <span class="mx-2 text-gray-500">to</span>
+                                                    <div class="w-full">
+                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end"
+                                                            x-model="selected.endDate" name="end_date" type="text"
+                                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="End date">
                                                         <x-form-error name="end_date" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label for="datepicker-range-start"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
+                                                    Duration</label>
+                                                <div id="date-range-picker" date-rangepicker
+                                                    class="flex items-center justify-between gap-2">
+                                                    <div class="w-full">
+                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start"
+                                                            x-model="selected.eventStartDate" name="event_start_date"
+                                                            type="text"
+                                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="Start date">
+                                                        <x-form-error name="event_start_date" />
+                                                    </div>
+                                                    <span class="mx-2 text-gray-500">to</span>
+                                                    <div class="w-full">
+                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end"
+                                                            x-model="selected.eventEndDate" name="event_end_date"
+                                                            type="text"
+                                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="End date">
+                                                        <x-form-error name="event_end_date" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -285,17 +323,6 @@
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Rs.500" />
                                                 <x-form-error name="fees" />
-                                            </div>
-
-                                            <div>
-                                                <label for="capacity"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capacity</label>
-
-                                                <input type="text" name="capacity" id="capacity"
-                                                    x-model="selected.capacity"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                                    placeholder="e.g. 500" />
-                                                <x-form-error name="capacity" />
                                             </div>
 
                                             <div class="flex justify-end space-x-2 mt-4">

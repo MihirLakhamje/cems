@@ -138,7 +138,6 @@ class EventController extends Controller
             'end_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date'],
             'location' => ['required', 'string', 'max:255'],
             'fees' => ['required', 'numeric', 'min:0'],
-            'capacity' => ['required', 'integer', 'min:1'],
         ]);
 
         try {
@@ -149,7 +148,6 @@ class EventController extends Controller
                 'end_date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d'),
                 'location' => $request->location,
                 'fees' => $request->fees,
-                'capacity' => $request->capacity,
             ]);
 
             return redirect()->route('events.index')->with('success', 'Event updated successfully.');
