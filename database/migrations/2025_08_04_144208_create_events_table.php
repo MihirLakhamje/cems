@@ -14,11 +14,13 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Department::class);
+            $table->foreignIdFor(Department::class)->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('description');
             $table->date('start_date');
             $table->date('end_date');
+            $table->date('event_start_date');
+            $table->date('event_end_date');
             $table->string('location');
             $table->string('image')->nullable();
             $table->decimal('fees', 8, 2);

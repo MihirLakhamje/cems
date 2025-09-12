@@ -14,6 +14,8 @@ class Event extends Model
         "description",
         "start_date",
         "end_date",
+        "event_start_date",
+        "event_end_date",
         "location",
         "image",
         "fees",
@@ -23,6 +25,8 @@ class Event extends Model
     protected $casts = [
         'start_date' => 'date:d-m-Y',
         'end_date' => 'date:d-m-Y',
+        'event_start_date' => 'date:d-m-Y',
+        'event_end_date' => 'date:d-m-Y',
     ];
 
     

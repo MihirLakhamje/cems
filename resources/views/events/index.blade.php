@@ -124,15 +124,15 @@
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>
                 <th class="px-6 py-3">Name</th>
-                <th class="px-6 py-3">Start Date</th>
-                <th class="px-6 py-3">Last Date for Register</th>
+                <th class="px-6 py-3">Registration Duration</th>
+                <th class="px-6 py-3">Event Duration</th>
                 <th class="px-6 py-3">Department</th>
                 <th class="px-6 py-3">Fees</th>
                 <th class="px-6 py-3">Action</th>
             </x-slot:column>
 
             @foreach ($events as $event)
-                <tr>
+                <tr class="text-nowrap">
                     <td class="px-6 py-4">
                         {{-- (currentPage() - 1) * perPage + index --}}
                         {{-- (1-1) * 10 + 1 = 1 --}}
@@ -141,8 +141,12 @@
                         {{ ($events->currentPage() - 1) * $events->perPage() + $loop->iteration }}
                     </td>
                     <td class="px-6 py-4">{{ $event->name }}</td>
-                    <td class="px-6 py-4">{{ $event->start_date->format('d/m/Y') }}</td>
-                    <td class="px-6 py-4">{{ $event->end_date->format('d/m/Y') }}</td>
+                    <td class="px-6 py-4">
+                        {{ $event->start_date->format('d/m/y') }} - {{ $event->end_date->format('d/m/y') }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ $event->event_start_date->format('d/m/y') }} - {{ $event->event_end_date->format('d/m/y') }}
+                    </td>
                     <td class="px-6 py-4">{{ $event->department->name }}</td>
                     <td class="px-6 py-4">₹{{ $event->fees }}</td>
                     <td class="px-6 py-4">
