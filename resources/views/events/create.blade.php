@@ -21,7 +21,8 @@
                 <x-form-error name="name" />
             </div>
             <div>
-                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description of
+                <label for="description"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description of
                     event</label>
 
                 <input type="text" name="description" id="description"
@@ -31,35 +32,42 @@
             </div>
             <div>
                 <label for="datepicker-range-start"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration
-                    of registration</label>
-                <div id="date-range-picker" date-rangepicker class="flex items-center justify-between">
-                    <div class="relative flex">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                            </svg>
-                        </div>
-                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start" name="start_date" type="text"
-                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="date start">
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Duration</label>
+                <div id="date-range-picker" date-rangepicker class="flex items-center justify-between gap-2">
+                    <div class="w-full">
+                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start" name="start_date"
+                            type="text"
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="Start date">
                         <x-form-error name="start_date" />
                     </div>
                     <span class="mx-2 text-gray-500">to</span>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                            </svg>
-                        </div>
+                    <div class="w-full">
                         <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end" name="end_date" type="text"
-                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="date end">
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="End date">
                         <x-form-error name="end_date" />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="datepicker-range-start"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Duration</label>
+                <div id="date-range-picker" date-rangepicker class="flex items-center justify-between gap-2">
+                    <div class="w-full">
+                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start" name="event_start_date"
+                            type="text"
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="Start date">
+                        <x-form-error name="event_start_date" />
+                    </div>
+                    <span class="mx-2 text-gray-500">to</span>
+                    <div class="w-full">
+                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end" name="event_end_date"
+                            type="text"
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="End date">
+                        <x-form-error name="event_end_date" />
                     </div>
                 </div>
             </div>

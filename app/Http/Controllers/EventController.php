@@ -83,6 +83,8 @@ class EventController extends Controller
             'description' => ['required', 'string'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after_or_equal:start_date'],
+            'event_start_date' => ['required', 'date'],
+            'event_end_date' => ['required', 'date', 'after_or_equal:event_start_date'],
             'location' => ['required', 'string', 'max:255'],
             'fees' => ['required', 'numeric', 'min:0'],
             'capacity' => ['required', 'integer', 'min:1'],
@@ -94,6 +96,8 @@ class EventController extends Controller
             $event->description = $request->description;
             $event->start_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d');
             $event->end_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->end_date)->format('Y-m-d');
+            $event->event_start_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->event_start_date)->format('Y-m-d');
+            $event->event_end_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->event_end_date)->format('Y-m-d');
             $event->location = $request->location;
             $event->fees = $request->fees;
             $event->capacity = $request->capacity;
