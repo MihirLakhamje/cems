@@ -12,5 +12,17 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-primary-50: #F0F5FF;
+    --color-primary-100: #E5EDFF;
+    --color-primary-200: #CDDBFE;
+    --color-primary-300: #B4C6FC;
+    --color-primary-400: #8DA2FB;
+    --color-primary-500: #6875F5;
+    --color-primary-600: #5850EC;
+    --color-primary-700: #5145CD;
+    --color-primary-800: #42389D;
+    --color-primary-900: #362F78;
 }
+
 @custom-variant dark (&:where(.dark, .dark *));

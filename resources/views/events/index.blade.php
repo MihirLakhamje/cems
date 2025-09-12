@@ -14,7 +14,7 @@
             <x-slot:button>
                 @can('create', App\Models\Event::class)
                     <a href="{{ route('events.create') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2 px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        class="text-white bg-primary-700 hover:bg-primary-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2 px-2 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none">
                         Add Event
                     </a>
                 @endcan
@@ -24,7 +24,7 @@
 
                     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
                         data-dropdown-placement="bottom-start"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         type="button"><svg class="w-4 h-4 sm:w-5 sm:h-5 text-white-800 dark:text-gray-200"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             fill="currentColor" viewBox="0 0 24 24">
@@ -38,7 +38,7 @@
                     <div id="dropdown"
                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-xs dark:bg-gray-700 p-5">
                         <form method="GET" action="{{ route('events.index') }}" class="space-y-3">
-                            
+
                             <div>
                                 <label class="text-sm">Start Date</label>
                                 <input type="date" name="start_date" value="{{ request('start_date') }}"
@@ -53,7 +53,7 @@
                                 <label for="view"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">View</label>
                                 <select id="view" name="owned"
-                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="">All</option>
                                     <option value="1" @selected(request('owned') == '1')>Owned</option>
                                 </select>
@@ -62,12 +62,13 @@
                                 <label for="fees"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fees</label>
                                 <div class="flex gap-2">
-                                    <input type="number" id="small-input" type="number" name="fees_min" value="{{ request('fees_min') }}" placeholder="Min ₹" id="fees_min"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <input type="number" id="small-input" type="number" name="fees_min"
+                                        value="{{ request('fees_min') }}" placeholder="Min ₹" id="fees_min"
+                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <input type="number" name="fees_max" value="{{ request('fees_max') }}"
                                         placeholder="Max ₹"
-                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    
+                                        class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
                                 </div>
                             </div>
                             <div class="flex justify-end gap-2">
@@ -78,7 +79,7 @@
 
                                 {{-- Apply Filters --}}
                                 <button type="submit"
-                                    class="text-sm px-3 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                                    class="text-sm px-3 py-2 text-white bg-primary-600 rounded-lg hover:bg-primary-700">
                                     Apply
                                 </button>
                             </div>
@@ -90,7 +91,7 @@
                     @foreach (['start_date' => 'Start', 'end_date' => 'End', 'owned' => 'View', 'fees_min' => 'Min Fees', 'fees_max' => 'Max Fees'] as $key => $label)
                         @if (request($key))
                             <a href="{{ request()->fullUrlWithQuery([$key => null]) }}"
-                                class="flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                class="flex items-center bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 <span>
                                     {{ $label }}:
                                     @if ($key === 'owned' && request($key) == '1')
@@ -124,8 +125,8 @@
                 <th class="px-6 py-3">Sr. No.</th>
                 <th class="px-6 py-3">Name</th>
                 <th class="px-6 py-3">Start Date</th>
-                <th class="px-6 py-3">End Date of Registration</th>
-                <th class="px-6 py-3">Department Associated</th>
+                <th class="px-6 py-3">Last Date for Register</th>
+                <th class="px-6 py-3">Department</th>
                 <th class="px-6 py-3">Fees</th>
                 <th class="px-6 py-3">Action</th>
             </x-slot:column>
@@ -145,7 +146,7 @@
                     <td class="px-6 py-4">{{ $event->department->name }}</td>
                     <td class="px-6 py-4">₹{{ $event->fees }}</td>
                     <td class="px-6 py-4">
-                        <div class="flex gap-5 items-center">
+                        <div class="flex gap-4 items-center">
                             <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
                                 class="text-blue-600 dark:text-blue-500 me-0">
                                 View
@@ -156,23 +157,23 @@
                                     Registered
                                 </span>
                             @endif
-                            <div x-data="{
-                                eventEditModal: @json($errors->any()),
-                                selected: {
-                                    id: '{{ old('id') ?? '' }}',
-                                    deptId: '{{ old('department_id') ?? '' }}',
-                                    name: '{{ old('name') ?? '' }}',
-                                    description: '{{ old('description') ?? '' }}',
-                                    startDate: '{{ old('start_date') ?? '' }}',
-                                    endDate: '{{ old('end_date') ?? '' }}',
-                                    location: '{{ old('location') ?? '' }}',
-                                    image: '{{ old('image') ?? '' }}',
-                                    fees: '{{ old('fees') ?? '' }}',
-                                    capacity: '{{ old('capacity') ?? '' }}'
-                                }
-                            }">
+                            @can('update', $event)
+                                <div x-data="{
+                                    eventEditModal: @json($errors->any()),
+                                    selected: {
+                                        id: '{{ old('id') ?? '' }}',
+                                        deptId: '{{ old('department_id') ?? '' }}',
+                                        name: '{{ old('name') ?? '' }}',
+                                        description: '{{ old('description') ?? '' }}',
+                                        startDate: '{{ old('start_date') ?? '' }}',
+                                        endDate: '{{ old('end_date') ?? '' }}',
+                                        location: '{{ old('location') ?? '' }}',
+                                        image: '{{ old('image') ?? '' }}',
+                                        fees: '{{ old('fees') ?? '' }}',
+                                        capacity: '{{ old('capacity') ?? '' }}'
+                                    }
+                                }">
 
-                                @can('update', $event)
                                     <button type="button"
                                         class="text-green-600 dark:text-green-500 cursor-pointer hover:underline me-0"
                                         @@click="eventEditModal = true; 
@@ -201,9 +202,8 @@
                                                     of
                                                     event</label>
 
-                                                <input type="text" name="name" id="name"
-                                                    x-model="selected.name"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                <input type="text" name="name" id="name" x-model="selected.name"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Iterationz" />
                                                 <x-form-error name="name" />
                                             </div>
@@ -216,7 +216,7 @@
 
                                                 <input type="text" name="description" id="description"
                                                     x-model="selected.description"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Iterationz" />
                                                 <x-form-error name="description" />
                                             </div>
@@ -238,7 +238,7 @@
                                                         <input datepicker datepicker-format="dd/mm/yyyy"
                                                             id="datepicker-range-start" name="start_date" type="text"
                                                             x-model="selected.startDate"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="date start">
                                                         <x-form-error name="start_date" />
                                                     </div>
@@ -256,7 +256,7 @@
                                                         <input datepicker datepicker-format="dd/mm/yyyy"
                                                             id="datepicker-range-end" name="end_date" type="text"
                                                             x-model="selected.endDate"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="Select date end">
                                                         <x-form-error name="end_date" />
                                                     </div>
@@ -268,7 +268,7 @@
 
                                                 <input type="text" name="location" id="location"
                                                     x-model="selected.location"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. sies college" />
                                                 <x-form-error name="location" />
                                             </div>
@@ -278,7 +278,7 @@
 
                                                 <input type="text" name="fees" id="fees"
                                                     x-model="selected.fees"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. Rs.500" />
                                                 <x-form-error name="fees" />
                                             </div>
@@ -289,7 +289,7 @@
 
                                                 <input type="text" name="capacity" id="capacity"
                                                     x-model="selected.capacity"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     placeholder="e.g. 500" />
                                                 <x-form-error name="capacity" />
                                             </div>
@@ -303,8 +303,8 @@
                                             </div>
                                         </form>
                                     </x-modal>
-                                @endcan
-                            </div>
+                                </div>
+                            @endcan
 
                             @can('delete', $event)
                                 <form action="{{ route('events.destroy', $event->id) }}" method="post">

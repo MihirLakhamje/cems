@@ -48,12 +48,12 @@
 
                             @if (auth()->check() && auth()->user()->role === 'user')
                                 <x-link :typeoflink="'link'" href="{{ route('registrations.my', $event->id) }}"
-                                    class="text-blue-600 dark:text-blue-500 me-0">
+                                    class="text-primary-600 dark:text-primary-500 me-0">
                                     View
                                 </x-link>
                             @else
                                 <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
-                                    class="text-blue-600 dark:text-blue-500 me-0">
+                                    class="text-primary-600 dark:text-primary-500 me-0">
                                     View
                                 </x-link>
                             @endif

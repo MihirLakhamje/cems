@@ -6,7 +6,7 @@
     {{-- Back button --}}
     <div class="flex items-center gap-4 mb-4">
         <x-link :typeoflink="'link'" href="{{ route('departments.index') }}"
-            class="text-blue-600 hover:underline dark:text-blue-400">
+            class="text-primary-600 hover:underline dark:text-primary-400">
             ← Back
         </x-link>
     </div>
@@ -62,7 +62,7 @@
                             <td class="px-6 py-4">{{ $index + 1 }}</td>
                             <td class="px-6 py-4">
                                 <a href="{{ route('events.show', $event) }}"
-                                    class="text-blue-600 hover:underline dark:text-blue-400">
+                                    class="text-primary-600 hover:underline dark:text-primary-400">
                                     {{ $event->name }}
                                 </a>
                             </td>

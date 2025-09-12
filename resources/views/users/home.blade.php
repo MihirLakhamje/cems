@@ -27,7 +27,7 @@
             @can('create', App\Models\Event::class)
 			<div>
 				<a href="{{ route('events.create') }}" title="Add Event"
-					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-px text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+					class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-md text-sm p-px text-center inline-flex items-center  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
 					<svg class="w-6 h-6 text-white dark:text-gray-200" aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -50,7 +50,7 @@
             @can('create', App\Models\Department::class)
 			<div>
 				<a href="{{ route('departments.create') }}" title="Add Department"
-					class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm p-px text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+					class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-md text-sm p-px text-center inline-flex items-center  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
 					<svg class="w-6 h-6 text-white dark:text-gray-200" aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -27,7 +27,7 @@
             <x-slot:button>
                 @can('create', App\Models\Department::class)
                     <a href="{{ route('departments.create') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2 px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
+                        class="text-white bg-primary-700 hover:bg-primary-800 font-medium rounded-lg sm:text-sm text-xs sm:px-4 sm:py-2 px-2 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none">
                         Add department
                     </a>
                 @endcan
@@ -36,7 +36,7 @@
                 <div>
                     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" title="Filter options"
                         data-dropdown-placement="bottom-start"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm p-2 text-center inline-flex items-center me-2 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         type="button"><svg class="w-4 h-4 sm:w-5 sm:h-5 text-white-800 dark:text-gray-200"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@
                                 <label for="view"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">View</label>
                                 <select id="view" name="owned"
-                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="">All</option>
                                     <option value="1" @selected(request('owned') == '1')>Owned</option>
                                 </select>
@@ -63,7 +63,7 @@
                                 <label for="status"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                                 <select id="status" name="is_active"
-                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="">All</option>
                                     <option value="1" @selected(request('is_active') == '1')>Active</option>
                                     <option value="0" @selected(request('is_active') == '0')>Inactive</option>
@@ -76,7 +76,7 @@
 
                                 <div class="flex items-center mb-2">
                                     <input id="departmental" type="checkbox" name="type[]" value="dept_fest"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                        class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                         @checked(in_array('dept_fest', $types))>
                                     <label for="departmental"
                                         class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Departmental
@@ -85,7 +85,7 @@
 
                                 <div class="flex items-center mb-2">
                                     <input id="college" type="checkbox" name="type[]" value="clg_fest"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                        class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                         @checked(in_array('clg_fest', $types))>
                                     <label for="college"
                                         class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">College
@@ -94,7 +94,7 @@
 
                                 <div class="flex items-center">
                                     <input id="association" type="checkbox" name="type[]" value="association"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                        class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                         @checked(in_array('association', $types))>
                                     <label for="association"
                                         class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Association</label>
@@ -109,7 +109,7 @@
 
                                 {{-- Apply Filters --}}
                                 <button type="submit"
-                                    class="text-sm px-3 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                                    class="text-sm px-3 py-2 text-white bg-primary-600 rounded-lg hover:bg-primary-700">
                                     Apply
                                 </button>
                             </div>
@@ -121,7 +121,7 @@
                     @foreach (['owned' => 'View', 'is_active' => 'Status', 'type' => 'Fest Type', ] as $key => $label)
                         @if (request($key))
                             <a href="{{ request()->fullUrlWithQuery([$key => null]) }}"
-                                class="flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                class="flex items-center bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 <span>
                                     {{ $label }}:
                                     @if ($key === 'owned' && request($key) == '1')
@@ -181,10 +181,10 @@
                         {{ $department->events->count() > 0 ? $department->events->count() : 'TBD' }}</td>
                     <td class="px-6 py-4">
                         <span
-                            class="{{ $department->is_active ? 'text-green-600' : 'text-red-600' }}">{{ $department->is_active ? 'Active' : 'Inactive' }}</span>
+                            class="{{ $department->is_active ? 'text-green-600 dark:text-green-500' : 'text-red-600 dark:text-red-500' }}">{{ $department->is_active ? 'Active' : 'Inactive' }}</span>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="flex gap-5 items-center">
+                        <div class="flex gap-4 items-center">
                             <x-link :typeoflink="'link'" href="{{ route('departments.show', $department->id) }}"
                                 class="text-blue-600 dark:text-blue-500 me-0">
                                 View
@@ -216,7 +216,7 @@
                                     @method('DELETE')
                                     <x-link :typeoflink="'button'"
                                         onclick="return confirm('Are you sure? This action cannot be undone.')"
-                                        class="text-red-600 dark:text-red-500">
+                                        class="text-red-600 dark:text-red-500 cursor-pointer">
                                         Delete
                                     </x-link>
                                 </form>
@@ -227,13 +227,8 @@
             @endforeach
 
             @if ($departments->isEmpty())
-                <tr class="bg-white dark:bg-gray-800 text-nowrap">
+                <tr class="col-span-6 bg-white dark:bg-gray-800 text-nowrap text-start">
                     <td class="px-6 py-4 w-0">No department records found</td>
-                    <td class="px-6 py-4"> </td>
-                    <td class="px-6 py-4"> </td>
-                    <td class="px-6 py-4"> </td>
-                    <td class="px-6 py-4"> </td>
-                    <td class="px-6 py-4"> </td>
                 </tr>
             @endif
         </x-data-table>
@@ -250,7 +245,7 @@
                         department</label>
 
                     <input type="text" name="name" id="name" x-model="selected.name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="e.g. Computer Science" />
                     <x-form-error name="name" />
                 </div>
@@ -260,7 +255,7 @@
                         Head</label>
 
                     <input type="text" name="head_name" id="head_name" x-model="selected.headName"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="e.g. John Doe" />
                     <x-form-error name="head_name" />
                 </div>
@@ -269,7 +264,7 @@
                         address of Head</label>
 
                     <input type="email" name="head_email" id="head_email" x-model="selected.headEmail"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="e.g. name@example" />
                     <x-form-error name="head_email" />
                 </div>
@@ -278,7 +273,7 @@
                         number of Head</label>
 
                     <input type="text" name="head_phone" id="head_phone" x-model="selected.headPhone"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="e.g. 1234567890" />
                     <x-form-error name="head_phone" />
                 </div>
@@ -288,7 +283,7 @@
                         of
                         Fests.</label>
                     <select id="fest_type" name="fest_type" x-model="selected.festType"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option value="dept_fest">Departmental Fest</option>
                         <option value="clg_fest">College Fest</option>
                         <option value="association">Association</option>
@@ -300,7 +295,7 @@
                     <label for="is_active"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                     <select id="is_active" name="is_active" x-model="selected.isActive"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option value="0">Completed</option>
                         <option value="1">Ongoing</option>
                     </select>

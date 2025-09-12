@@ -47,11 +47,11 @@
                         <div class="flex gap-5 items-center">
 
                             <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
-                                class="text-blue-600 dark:text-blue-500 me-0">
+                                class="text-primary-600 dark:text-primary-500 me-0">
                                 View
                             </x-link>
 
-                            <form action="{{ route('registered-events.cancel', $event->id) }}" method="post">
+                            <form action="{{ route('registrations.destroy', $event->id) }}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <x-link :typeoflink="'button'"

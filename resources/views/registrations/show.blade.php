@@ -5,7 +5,7 @@
     <x-slot:header>Event Details</x-slot:header>
 
     <div class="flex space-x-2 items-center mb-4">
-        <x-link :typeoflink="'link'" href="{{ route('events.index') }}" class="text-blue-600 dark:text-blue-500">
+        <x-link :typeoflink="'link'" href="{{ route('events.index') }}" class="text-primary-600 dark:text-primary-500">
             Back
         </x-link>
         <span class="text-gray-800 dark:text-white">|</span>

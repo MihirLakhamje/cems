@@ -32,7 +32,7 @@
                 <td class="px-6 py-4">
                     <div class="flex gap-5 items-center">
                         <x-link :typeoflink="'link'" href="{{ route('events.show', $event->id) }}"
-                            class="text-blue-600 dark:text-blue-500 me-0">
+                            class="text-primary-600 dark:text-primary-500 me-0">
                             View
                         </x-link>
                         <form action="{{ route('registrations.destroy', $event->id) }}" method="post">
