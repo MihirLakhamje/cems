@@ -10,8 +10,6 @@
     <meta name="description"
         content="{{ $metaDescription ?? 'College Event Management System is an event management system that allows you to manage events for the college.' }}">
 
-    <meta name="author" content="Mehek Lakhamje">
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -91,7 +89,7 @@
                         </button>
                         <a href="/home" class="flex ms-2 md:me-24">
                             <img src="https://flowbite.com/docs/images/logo.svg" loading="lazy" class="h-8 me-3"
-                                alt="FlowBite Logo" />
+                                alt="CEMS Logo" />
                             <span
                                 class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">CEMS</span>
                         </a>

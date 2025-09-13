@@ -65,8 +65,5 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/{event}', [EventUserController::class, 'store'])->name('registrations.store');
         Route::delete('/{event}', [EventUserController::class, 'destroy'])->name('registrations.destroy');
         Route::get('/my', [EventUserController::class, 'myRegistrations'])->name('registrations.my');
-
-        // organizer / admin
-        Route::get('/event/{event}', [EventUserController::class, 'index'])->name('registrations.index');
     });
 });

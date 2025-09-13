@@ -13,22 +13,6 @@ use Illuminate\Support\Str;
 
 class EventUserController extends Controller
 {
-    /**
-     * Show all registrations for a specific event (organizer/admin).
-     */
-    public function index(Event $event)
-    {
-        try {
-            $events = auth()->user()->events;
-            return view('registrations.index', compact('events', 'events'));
-        } catch (Exception $e) {
-            \Log::error('Event registration failed: ' . $e->getMessage());
-            return redirect()->back()->with('toast', [
-                'type' => 'error',
-                'message' => 'Failed to load registrations.',
-            ]);
-        }
-    }
 
     /**
      * Register current user for an event (status = pending).
