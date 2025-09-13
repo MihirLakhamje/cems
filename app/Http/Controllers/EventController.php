@@ -17,9 +17,6 @@ class EventController extends Controller
         try {
             $query = Event::query();
 
-            // Select only required columns
-            $query->select(['id', 'name', 'description', 'start_date', 'end_date', 'event_start_date', 'event_end_date', 'location', 'capacity', 'fees', 'department_id']);
-
             // Filters
             if ($request->filled('search')) {
                 $query->where('name', 'LIKE', "%{$request->search}%");
