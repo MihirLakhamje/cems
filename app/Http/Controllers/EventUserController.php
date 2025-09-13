@@ -39,17 +39,8 @@ class EventUserController extends Controller
             Gate::authorize('registeration', $event);
             $user = auth()->user();
 
-            // Check if the user is already registered for the event
-            if ($user->events()->where('event_id', $event->id)->exists()) {
-                return redirect()->back()->with('toast', [
-                    'type' => 'info',
-                    'message' => 'You are already registered for this event.',
-                ]);
-            }
-
-            // Attach user to event (pivot table)
-            $user->events()->attach($event->id, [
-                'status' => 'confirmed',
+            $user->events()->syncWithoutDetaching([
+                $event->id => ['status' => 'confirmed']
             ]);
 
             Mail::to($user->email)->send(
