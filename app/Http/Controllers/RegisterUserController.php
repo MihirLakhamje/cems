@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterUserController extends Controller
 {
+    /**
+     * Show the user registration form.
+     */
     public function create()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
             // dd("User already authenticated");
             return redirect("/home");
         }
@@ -21,6 +24,9 @@ class RegisterUserController extends Controller
         return view('auth.register');
     }
 
+    /**
+     * Handle user registration.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -29,23 +35,25 @@ class RegisterUserController extends Controller
             'password' => ['required', 'min:6', 'confirmed'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,   //=> Assosiate array
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'admin',
-            'phone' => $request->phone,
-            'college_name' => $request->college_name,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,   //=> Assosiate array
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'college_name' => $request->college_name,
+            ]);
 
-        Auth::login($user); //Class
+            Auth::login($user);
 
-        if(!Auth::check()){
-            return redirect('/login');
-            // dd("Redirecting to login page");
+            if (!Auth::check()) {
+                return redirect('/login');
+            }
+
+            return redirect()->route('users.home')->with('toast', ['type' => 'success', 'message' => 'Registration successful. Welcome!']);
+        } catch (\Exception $e) {
+            \Log::error('User registration failed: ' . $e->getMessage());
+            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Registration failed.']);
         }
-
-        return redirect('/home')->with('success', 'You have successfully registered.');
-        // dd("User registered");
-    }  
+    }
 }

@@ -9,9 +9,12 @@
 
     <x-slot:header>Registered Events</x-slot:header>
 
-    <section>
-        
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
 
+    <section>
         <x-data-table>
             <x-slot:column>
                 <th class="px-6 py-3">Sr. No.</th>
@@ -59,11 +62,8 @@
             @endif
         </x-data-table>
 
-
-
         <div class="mt-4">
             {{ $events->links() }}
         </div>
-
     </section>
 </x-layout>

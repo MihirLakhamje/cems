@@ -8,6 +8,9 @@ use Illuminate\Validation\ValidationException;
 
 class SessionController extends Controller
 {
+    /**
+     * Show the login form or redirect if already authenticated.
+     */
     public function create()
     {
         // Step 1: Check if the user is already authenticated
@@ -19,15 +22,16 @@ class SessionController extends Controller
         return view('auth.login');
     }
 
+    /**
+     * Handle the login request.
+     */
     public function store(Request $request)
     {
-        // Step 1: Validate the login credentials
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6'],
         ]);
 
-        // Step 2: Attempt to log in the user with the provided credentials
         if(!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
                 'email' => 'Invalid credentials.',
@@ -35,18 +39,18 @@ class SessionController extends Controller
         }
 
         try {
-            // Step 3: Regenerate the session to prevent session fixation attacks
             $request->session()->regenerate();
             
-            // Step 4: Redirect the user to the home page with a success message
-            return redirect('/home')->with('success', 'You have successfully logged in.');
+            return redirect()->route('users.home')->with('taost', ['type' => 'success', 'message' => 'Login successful. Welcome back!']);
         } catch (\Exception $th) {
-            // Step 5: Log the error and redirect back with an error message
             \Log::error('Login failed: ' . $th->getMessage());
-            return redirect()->back()->with('error', 'Failed to log in. Please try again.');
+            return redirect()->back()->with('error', 'Failed to log in.');
         }
     }
 
+    /**
+     * Handle the logout request.
+     */
     public function destroy()
     {
         // Step 1: Log out the user

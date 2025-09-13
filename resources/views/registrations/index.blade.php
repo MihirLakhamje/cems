@@ -9,6 +9,11 @@
 
     <x-slot:header>Registered Events</x-slot:header>
 
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
+
     <section class="flex flex-col gap-2" x-data="{
         registeredEventModal: @json($errors->any()),
         selected: {

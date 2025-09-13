@@ -6,6 +6,11 @@
         Add event
     </x-slot:header>
 
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
+
     <div
         class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form class="w-full max-w-lg flex flex-col gap-5" action="{{ route('events.store') }}" method="POST">
@@ -31,19 +36,18 @@
                 <x-form-error name="description" />
             </div>
             <div>
-                <label for="datepicker-range-start"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Duration</label>
-                <div id="date-range-picker" date-rangepicker class="flex items-center justify-between gap-2">
+                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Duration</div>
+                <div datepicker date-rangepicker datepicker-format="dd/mm/yyyy"
+                    class="flex items-center justify-between gap-2">
                     <div class="w-full">
-                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start" name="start_date"
-                            type="text"
+                        <input id="datepicker-range-start" name="start_date" type="text"
                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Start date">
                         <x-form-error name="start_date" />
                     </div>
                     <span class="mx-2 text-gray-500">to</span>
                     <div class="w-full">
-                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end" name="end_date" type="text"
+                        <input id="datepicker-range-end" name="end_date" type="text"
                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="End date">
                         <x-form-error name="end_date" />
@@ -51,20 +55,18 @@
                 </div>
             </div>
             <div>
-                <label for="datepicker-range-start"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Duration</label>
-                <div id="date-range-picker" date-rangepicker class="flex items-center justify-between gap-2">
+                <div class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Duration</div>
+                <div datepicker date-rangepicker datepicker-format="dd/mm/yyyy"
+                    class="flex items-center justify-between gap-2">
                     <div class="w-full">
-                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start" name="event_start_date"
-                            type="text"
+                        <input id="event-range-start" name="event_start_date" type="text"
                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Start date">
                         <x-form-error name="event_start_date" />
                     </div>
                     <span class="mx-2 text-gray-500">to</span>
                     <div class="w-full">
-                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end" name="event_end_date"
-                            type="text"
+                        <input id="event-range-end" name="event_end_date" type="text"
                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="End date">
                         <x-form-error name="event_end_date" />

@@ -15,30 +15,25 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         try {
-            //code...
             $query = Department::query();
 
-            // 🔍 Search
+            // Filters
             if ($request->filled('search')) {
                 $query->where('name', 'LIKE', "%{$request->search}%");
             }
 
-            // 👤 Owned filter
             if ($request->input('owned') === '1' && auth()->check()) {
                 $query->where('id', auth()->user()->department_id);
             }
 
-            // 📌 Status filter (boolean)
             if ($request->filled('is_active')) {
                 $query->where('is_active', (int) $request->is_active);
             }
 
-            // 🎭 Type filter (multiple checkboxes)
             if ($request->filled('type')) {
                 $query->whereIn('fest_type', $request->type);
             }
 
-            // 📅 Order latest & paginate
             $departments = $query
                 ->with([
                     'events:id,department_id,name,start_date,end_date,fees'
@@ -46,18 +41,15 @@ class DepartmentController extends Controller
                 ->latest()
                 ->paginate(8);
 
-
             return view('departments.index', [
                 'departments' => $departments,
                 'search' => $request->search,
             ]);
         } catch (\Exception $th) {
             \Log::error('Fetching departments failed: ' . $th->getMessage());
-            dd($th->getMessage());
-            // return redirect()->back()->with('error', 'Failed to fetch departments.');
+            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Failed to load departments.']);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -65,7 +57,12 @@ class DepartmentController extends Controller
     public function create()
     {
         Gate::authorize('create', Department::class);
-        return view('departments.create');
+        try {
+            return view('departments.create');
+        } catch (\Exception $e) {
+            \Log::error('Error loading create department form: ' . $e->getMessage());
+            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -74,7 +71,7 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         Gate::authorize('create', Department::class);
-        //STEP 1: Validate the request data
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:departments,name', 'min:1'],
             'head_name' => ['required', 'string', 'max:255', 'min:3',],
@@ -84,7 +81,6 @@ class DepartmentController extends Controller
         ]);
 
         try {
-            //STEP 2: Create a new department instance and save it to the database
             $department = Department::create([
                 'name' => $request->name,
                 'head_name' => $request->head_name,
@@ -93,14 +89,10 @@ class DepartmentController extends Controller
                 'fest_type' => $request->fest_type,
             ]);
 
-            //STEP 3: Redirect to the departments index with a success message
-            return redirect()->route('departments.index')->with('success', 'Department created successfully.');
+            return redirect()->route('departments.index')->with('toast', ['type' => 'success', 'message' => 'Department created successfully.']);
         } catch (Exception $e) {
-            //STEP 4: Handle any exceptions that occur during the process
             \Log::error('Failed to create department: ' . $e->getMessage());
-            // Redirect back with an error message
-            dd($e->getMessage());
-            // return redirect()->back()->with('error', 'Failed to create department.');
+            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Failed to create department.']);
         }
     }
 
@@ -109,17 +101,17 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        return view('departments.show', [
-            'department' => $department,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Department $department)
-    {
-        //
+        try {
+            return view('departments.show', [
+                'department' => $department,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error displaying department: ' . $e->getMessage());
+            return redirect()->route('departments.index')->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to load department details.',
+            ]);
+        }
     }
 
     /**
@@ -128,7 +120,6 @@ class DepartmentController extends Controller
     public function update(Request $request, Department $department)
     {
         Gate::authorize('update', $department);
-        // Step 1: Validate the request data
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'min:1'],
             'head_name' => ['required', 'string', 'max:255', 'min:3'],
@@ -139,7 +130,6 @@ class DepartmentController extends Controller
         ]);
 
         try {
-            // Step 2: Update the department with the validated data
             $department->update([
                 'name' => $request->name,
                 'head_name' => $request->head_name,
@@ -149,15 +139,12 @@ class DepartmentController extends Controller
                 'is_active' => $request->is_active,
             ]);
 
-            // Step 3: Save the updated department
             $department->save();
 
-            // Step 4: Redirect to the departments index with a success message
-            return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
+            return redirect()->route('departments.index')->with('toast', ['type' => 'success', 'message' => 'Department updated successfully.']);
         } catch (Exception $e) {
-            // Step 5: Handle any exceptions that occur during the update process
             \Log::error('Failed to update department: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to update department.');
+            return redirect()->route('departments.index')->with('toast', ['type' => 'error', 'message' => 'Failed to update department.']);
         }
     }
 
@@ -167,7 +154,12 @@ class DepartmentController extends Controller
     public function destroy(Department $department)
     {
         Gate::authorize('delete', $department);
-        $department->delete();
-        return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
+        try {
+            $department->events()->delete();
+            return redirect()->route('departments.index')->with('toast', ['type' => 'success', 'message' => 'Department and its events deleted successfully.']);
+        } catch (Exception $e) {
+            \Log::error('Failed to delete associated events: ' . $e->getMessage());
+            return redirect()->back()->with('toast', ['type' => 'error', 'message' => 'Failed to delete department events.']);
+        }
     }
 }

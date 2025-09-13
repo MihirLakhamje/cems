@@ -3,6 +3,11 @@
     <x-slot:metaDescription>View event details</x-slot:metaDescription>
     <x-slot:header>Event Details</x-slot:header>
 
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
+
     {{-- Back & Delete Buttons --}}
     <div class="flex items-center gap-4 mb-6">
         <x-link :typeoflink="'link'" href="{{ route('events.index') }}"

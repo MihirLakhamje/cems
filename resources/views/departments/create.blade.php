@@ -6,6 +6,11 @@
         Add department
     </x-slot:header>
 
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
+
     <div
         class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form class="w-full max-w-lg flex flex-col gap-5" action="{{ route('departments.store') }}" method="POST">

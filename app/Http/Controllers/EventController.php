@@ -42,6 +42,9 @@ class EventController extends Controller
             if ($request->filled('fees_max')) {
                 $query->where('fees', '<=', $request->fees_max);
             }
+            if ($request->query('fail') === '1') {
+                throw new \Exception("Forced failure for testing");
+            }
 
             $user = auth()->user();
 
@@ -59,11 +62,14 @@ class EventController extends Controller
             ]);
         } catch (\Exception $e) {
             \Log::error('Fetching events failed: ' . $e->getMessage());
-            dd($e->getMessage());
+            return redirect()
+                ->route('events.index')
+                ->with('toast', [
+                    'type' => 'error',
+                    'message' => 'Failed to load events.',
+                ]);
         }
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -71,7 +77,17 @@ class EventController extends Controller
     public function create()
     {
         Gate::authorize('create', Event::class);
-        return view('events.create');
+        try {
+            return view('events.create');
+        } catch (\Exception $e) {
+            \Log::error('Event creation access denied: ' . $e->getMessage());
+            return redirect()
+                ->route('events.index')
+                ->with('toast', [
+                    'type' => 'error',
+                    'message' => 'Something went wrong.',
+                ]);
+        }
     }
 
     /**
@@ -84,10 +100,10 @@ class EventController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
-            'event_start_date' => ['required', 'date'],
-            'event_end_date' => ['required', 'date', 'after_or_equal:event_start_date'],
+            'start_date' => ['required', 'date_format:d/m/Y'],
+            'end_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date'],
+            'event_start_date' => ['required', 'date_format:d/m/Y'],
+            'event_end_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:event_start_date'],
             'location' => ['required', 'string', 'max:255'],
             'fees' => ['required', 'numeric', 'min:0'],
             'capacity' => ['required', 'integer', 'min:1'],
@@ -97,21 +113,26 @@ class EventController extends Controller
             $event = new Event();
             $event->name = $request->name;
             $event->description = $request->description;
-            $event->start_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d');
-            $event->end_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->end_date)->format('Y-m-d');
-            $event->event_start_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->event_start_date)->format('Y-m-d');
-            $event->event_end_date = \Carbon\Carbon::createFromFormat('m/d/Y', $request->event_end_date)->format('Y-m-d');
+            $event->start_date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d');
+            $event->end_date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d');
+            $event->event_start_date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->event_start_date)->format('Y-m-d');
+            $event->event_end_date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->event_end_date)->format('Y-m-d');
             $event->location = $request->location;
             $event->fees = $request->fees;
             $event->capacity = $request->capacity;
             $event->department_id = auth()->user()->department_id;
             $event->save();
 
-            return redirect()->route('events.index')->with('success', 'Event created successfully.');
+            return redirect()->route('events.index')->with('toast', [
+                'type' => 'success',
+                'message' => 'Event created successfully.',
+            ]);
         } catch (\Exception $e) {
             \Log::error('Event creation failed: ' . $e->getMessage());
-            dd($e->getMessage());
-            // return redirect()->back()->with('error', 'Failed to create event. Please try again.');
+            return redirect()->back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to create event.',
+            ]);
         }
     }
 
@@ -120,11 +141,21 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        $users = $event->users()->paginate(4);
-        return view('events.show', [
-            'event' => $event,
-            'users' => $users,
-        ]);
+        try {
+            $users = $event->users()->paginate(4);
+            return view('events.show', [
+                'event' => $event,
+                'users' => $users,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Fetching event details failed: ' . $e->getMessage());
+            return redirect()
+                ->route('events.index')
+                ->with('toast', [
+                    'type' => 'error',
+                    'message' => 'Failed to load event details.',
+                ]);
+        }
     }
 
     /**
@@ -139,6 +170,8 @@ class EventController extends Controller
             'description' => ['required', 'string'],
             'start_date' => ['required'],
             'end_date' => ['required', 'after_or_equal:start_date'],
+            'event_start_date' => ['required'],
+            'event_end_date' => ['required', 'after_or_equal:event_start_date'],
             'location' => ['required', 'string', 'max:255'],
             'fees' => ['required', 'numeric', 'min:0'],
         ]);
@@ -155,11 +188,16 @@ class EventController extends Controller
                 'fees' => $request->fees,
             ]);
 
-            return redirect()->route('events.index')->with('success', 'Event updated successfully.');
+            return redirect()->route('events.index')->with('toast', [
+                'type' => 'success',
+                'message' => 'Event updated successfully.',
+            ]);
         } catch (\Exception $e) {
             \Log::error('Event update failed: ' . $e->getMessage());
-            dd($e->getMessage());
-            // return redirect()->back()->with('error', 'Failed to update event. Please try again.');
+            return redirect()->back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to update event.',
+            ]);
         }
     }
 
@@ -171,11 +209,16 @@ class EventController extends Controller
         Gate::authorize('delete', $event);
         try {
             $event->delete();
-            return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
+            return redirect()->route('events.index')->with('toast', [
+                'type' => 'success',
+                'message' => 'Event deleted successfully.',
+            ]);
         } catch (\Exception $e) {
             \Log::error('Event deletion failed: ' . $e->getMessage());
-            // dd($e->getMessage());
-            return redirect()->back()->with('error', 'Failed to delete event. Please try again.');
+            return redirect()->back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to delete event.',
+            ]);
         }
     }
 }

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /**
+     * Show the user dashboard with counts.
+     */
     public function home()
     {
         $user_count = User::count(); // Get the total user count
@@ -22,58 +25,56 @@ class UserController extends Controller
         ]);
     }
 
-    public function stats()
-    {
-        //
-    }
-
+    /**
+     * Show the user's profile.
+     */
     public function profile()
     {
         return view('users.profile');
     }
 
+    /**
+     * Update the user's profile information.
+     */
     public function updateProfile(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', 'exists:users,email' . Auth::id()],
+        ]);
         try {
-            $request->validate([
-                'name' => ['required', 'min:3'],
-                'email' => ['required', 'email'],
-            ]);
-
-            $user = User::find(Auth::user()->id);
-            $userEmail = User::where('email', $request->email)->first();
-            if ($userEmail) {
-                if ($userEmail->id != Auth::user()->id) {
-                    return redirect()->route('users.profile')->with('error', 'Email already exists.');
-                }
-            }
-
-            $user->name = $request->name;
-            $user->email = $request->email;
+            $user = Auth::user();
+            $user->fill($request->only(['name', 'email']));
             $user->save();
 
-            return redirect()->route('users.profile')->with('success', 'You have successfully updated your profile.');
+            return redirect()->route('users.profile')->with('toast', ['type' => 'success', 'message' => 'You have successfully updated your profile.']);
         } catch (Exception $e) {
-            return redirect()->route('users.profile')->with('error', 'Something went wrong.');
+            \Log::error('Profile update failed: ' . $e->getMessage());
+            return redirect()->route('users.profile')->with('toast', ['type' => 'error', 'message' => 'Something went wrong.']);
         }
     }
 
+    /**
+     * Update the user's password.
+     */
     public function updatePassword(Request $request)
     {
+        $request->validate([
+            'password' => ['required', 'min:6', 'confirmed'],
+        ]);
         try {
-            $request->validate([
-                'password' => ['required', 'min:6', 'confirmed'],
-            ]);
-
-            $user = User::find(Auth::user()->id);
+            $user = Auth::user();
             $user->password = bcrypt($request->password);
             $user->save();
-            return redirect()->route('users.profile')->with('success', 'You have successfully updated your password.');
+            return redirect()->route('users.profile')->with('toast', ['type' => 'success', 'message' => 'Password updated successfully.']);
         } catch (Exception $e) {
-            return redirect()->route('users.profile')->with('error', 'Something went wrong.');
+            return redirect()->route('users.profile')->with('toast', ['type' => 'error', 'message' => 'Something went wrong.']);
         }
     }
 
+    /**
+     * Display a listing of users with filters and pagination.
+     */
     public function index(Request $request)
     {
         try {
@@ -117,18 +118,18 @@ class UserController extends Controller
             ]);
         } catch (\Exception $e) {
             \Log::error('Fetching users failed: ' . $e->getMessage());
-            dd($e->getMessage());
+            return redirect()
+                ->route('users.index')
+                ->with('toast', [
+                    'type' => 'error',
+                    'message' => 'Failed to load users.',
+                ]);
         }
     }
 
-
-    public function show(User $user)
-    {
-        // return view('', compact('user'));
-        dd($user);
-    }
-
-
+    /**
+     * Assign role and department to a user.
+     */
     public function assign_role(Request $request, User $user)
     {
         $request->validate([
@@ -144,21 +145,24 @@ class UserController extends Controller
                 $user->department_id = null; // Clear department if not an organizer
             }
             $user->save();
-            return redirect()->route('users.index')->with('success', 'Role assigned successfully.');
+            return redirect()->route('users.index')->with('toast', ['type' => 'success', 'message' => 'Role assigned successfully.']);
         } catch (\Exception $e) {
             \Log::error('Error assigning role: ' . $e->getMessage());
-            return redirect()->route('users.index')->with('error', 'Something went wrong while assigning role.');
+            return redirect()->route('users.index')->with('toast', ['type' => 'error', 'message' => 'Something went wrong.']);
         }
     }
 
+    /**
+     * Delete a user.
+     */
     public function delete(User $user)
     {
         try {
             $user->delete();
-            return redirect()->route('login')->with('success', 'User deleted successfully.');
+            return redirect()->route('login')->with('toast', ['type' => 'success', 'message' => 'User deleted successfully.']);
         } catch (\Exception $e) {
             \Log::error('Error deleting user: ' . $e->getMessage());
-            return redirect()->route('users.index')->with('error', 'Something went wrong while deleting user.');
+            return redirect()->route('users.index')->with('toast', ['type' => 'error', 'message' => 'Something went wrong.']);
         }
     }
 }

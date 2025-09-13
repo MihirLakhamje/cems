@@ -9,6 +9,11 @@
 
     <x-slot:header>Departments</x-slot:header>
 
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
+
     <section class="flex flex-col gap-2" x-data="{
         departmentEditModal: @json($errors->any()),
         selected: {

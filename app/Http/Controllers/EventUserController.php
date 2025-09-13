@@ -19,16 +19,16 @@ class EventUserController extends Controller
     public function index(Event $event)
     {
         try {
-
-
-            $events = auth()->user()->events; // includes pivot data
-            dd($events);
-            // return view('registrations.index', compact('events', 'events'));
+            $events = auth()->user()->events;
+            return view('registrations.index', compact('events', 'events'));
         } catch (Exception $e) {
-            return back()->withErrors('Failed to fetch registrations.');
+            \Log::error('Event registration failed: ' . $e->getMessage());
+            return redirect()->back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to load registrations.',
+            ]);
         }
     }
-
 
     /**
      * Register current user for an event (status = pending).
@@ -41,10 +41,11 @@ class EventUserController extends Controller
 
             // Check if the user is already registered for the event
             if ($user->events()->where('event_id', $event->id)->exists()) {
-                dd('You are already registered for this event.');
-                // return redirect()->back()->with('error', 'You are already registered for this event.');
+                return redirect()->back()->with('toast', [
+                    'type' => 'info',
+                    'message' => 'You are already registered for this event.',
+                ]);
             }
-
 
             // Attach user to event (pivot table)
             $user->events()->attach($event->id, [
@@ -55,11 +56,16 @@ class EventUserController extends Controller
                 new EventRegistrationConfirmation($user, $event)
             );
 
-            return redirect()->route('registrations.my')->with('success', 'Successfully registered for the event!');
+            return redirect()->route('registrations.my')->with('toast', [
+                'type' => 'success',
+                'message' => 'Successfully registered for the event. A confirmation email has been sent to your email address.',
+            ]);
         } catch (\Exception $e) {
             \Log::error('Event registration failed: ' . $e->getMessage());
-            dd($e->getMessage());
-            // return redirect()->back()->with('error', 'Failed to register for the event. Please try again.');
+            return redirect()->back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to register for the event.',
+            ]);
         }
     }
 
@@ -77,9 +83,16 @@ class EventUserController extends Controller
 
             $registration->delete();
 
-            return redirect()->route('events.index')->with('success', 'Registration cancelled.');
+            return redirect()->route('events.index')->with('toast', [
+                'type' => 'success',
+                'message' => 'Registration cancelled successfully.',
+            ]);
         } catch (Exception $e) {
-            return back()->withErrors('Failed to cancel registration.');
+            \Log::error('Failed to cancel registration: ' . $e->getMessage());
+            return redirect()->back()->with('toast', [
+                'type' => 'error',
+                'message' => 'Failed to cancel registration.',
+            ]);
         }
     }
 

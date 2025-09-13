@@ -3,6 +3,11 @@
     <x-slot:metaDescription>View department details</x-slot:metaDescription>
     <x-slot:header>Department Details</x-slot:header>
 
+    {{-- Toast Notification --}}
+    @if (session('toast'))
+        <x-toast :type="session('toast.type')" :message="session('toast.message')" />
+    @endif
+
     {{-- Back button --}}
     <div class="flex items-center gap-4 mb-4">
         <x-link :typeoflink="'link'" href="{{ route('departments.index') }}"
