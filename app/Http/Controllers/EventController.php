@@ -18,7 +18,7 @@ class EventController extends Controller
             $query = Event::query();
 
             // Select only required columns
-            $query->select(['id', 'name', 'start_date', 'end_date', 'event_start_date', 'event_end_date', 'location', 'capacity', 'fees', 'department_id']);
+            $query->select(['id', 'name', 'description', 'start_date', 'end_date', 'event_start_date', 'event_end_date', 'location', 'capacity', 'fees', 'department_id']);
 
             // Filters
             if ($request->filled('search')) {
@@ -46,7 +46,7 @@ class EventController extends Controller
                 ->withCount(['users as is_registered' => function ($q) use ($user) {
                     $q->where('user_id', $user->id);
                 }])
-                ->orderBy('start_date', 'desc')
+                ->orderBy('start_date', 'asc')
                 ->paginate(8)
                 ->withQueryString();
 
@@ -134,8 +134,8 @@ class EventController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'start_date' => ['required', 'date_format:d/m/Y'],
-            'end_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date'],
+            'start_date' => ['required'],
+            'end_date' => ['required', 'after_or_equal:start_date'],
             'location' => ['required', 'string', 'max:255'],
             'fees' => ['required', 'numeric', 'min:0'],
         ]);
@@ -144,8 +144,10 @@ class EventController extends Controller
             $event->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                'start_date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d'),
-                'end_date' => \Carbon\Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d'),
+                'start_date' =>  $request->start_date,
+                'end_date' => $request->end_date,
+                'event_start_date' => $request->event_start_date,
+                'event_end_date' => $request->event_end_date,
                 'location' => $request->location,
                 'fees' => $request->fees,
             ]);

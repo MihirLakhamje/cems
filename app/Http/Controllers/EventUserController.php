@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventRegistrationConfirmation;
 use App\Models\Event;
 use App\Models\EventUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class EventUserController extends Controller
 {
@@ -16,7 +19,7 @@ class EventUserController extends Controller
     public function index(Event $event)
     {
         try {
-            
+
 
             $events = auth()->user()->events; // includes pivot data
             dd($events);
@@ -42,10 +45,15 @@ class EventUserController extends Controller
                 // return redirect()->back()->with('error', 'You are already registered for this event.');
             }
 
+
             // Attach user to event (pivot table)
             $user->events()->attach($event->id, [
-                'status' => 'confirmed', 
+                'status' => 'confirmed',
             ]);
+
+            Mail::to($user->email)->send(
+                new EventRegistrationConfirmation($user, $event)
+            );
 
             return redirect()->route('registrations.my')->with('success', 'Successfully registered for the event!');
         } catch (\Exception $e) {

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
             $table->enum('status', ['pending', 'confirmed', 'canceled'])->default('pending');
-            $table->string('ticket_number', 6)->nullable();
             $table->timestamps();
         });
     }

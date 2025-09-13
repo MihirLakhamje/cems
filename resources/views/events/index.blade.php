@@ -49,8 +49,7 @@
                                     </div>
                                     <span class="self-center mx-2 text-gray-500">to</span>
                                     <div>
-                                        <input type="date" name="reg_end_date"
-                                            value="{{ request('reg_end_date') }}"
+                                        <input type="date" name="reg_end_date" value="{{ request('reg_end_date') }}"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                                             placeholder="End date">
                                     </div>
@@ -215,10 +214,10 @@
                                     id: '{{ $event->id }}', 
                                     name: '{{ $event->name }}', 
                                     description: '{{ $event->description }}',
-                                    startDate: '{{ $event->start_date->format('d/m/Y') }}',
-                                    endDate: '{{ $event->end_date->format('d/m/Y') }}',
-                                    eventStartDate: '{{ $event->event_start_date->format('d/m/Y') }}',
-                                    eventEndDate: '{{ $event->event_end_date->format('d/m/Y') }}',
+                                    startDate: '{{ $event->start_date->format('Y-m-d') }}',
+                                    endDate: '{{ $event->end_date->format('Y-m-d') }}',
+                                    eventStartDate: '{{ $event->event_start_date->format('Y-m-d') }}',
+                                    eventEndDate: '{{ $event->event_end_date->format('Y-m-d') }}',
                                     location: '{{ $event->location }}',
                                     image: '{{ $event->image }}',
                                     fees: '{{ $event->fees }}'}">
@@ -260,19 +259,19 @@
                                                 <label for="datepicker-range-start"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration
                                                     Duration</label>
-                                                <div id="date-range-picker" date-rangepicker
+                                                <div id="date-range-picker"
                                                     class="flex items-center justify-between gap-2">
                                                     <div class="w-full">
-                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start"
-                                                            x-model="selected.startDate" name="start_date" type="text"
+                                                        <input id="datepicker-range-start"
+                                                            x-model="selected.startDate" name="start_date" type="date"
                                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="Start date">
                                                         <x-form-error name="start_date" />
                                                     </div>
                                                     <span class="mx-2 text-gray-500">to</span>
                                                     <div class="w-full">
-                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end"
-                                                            x-model="selected.endDate" name="end_date" type="text"
+                                                        <input id="datepicker-range-end"
+                                                            x-model="selected.endDate" name="end_date" type="date"
                                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="End date">
                                                         <x-form-error name="end_date" />
@@ -283,21 +282,21 @@
                                                 <label for="datepicker-range-start"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
                                                     Duration</label>
-                                                <div id="date-range-picker" date-rangepicker
+                                                <div id="date-range-picker" 
                                                     class="flex items-center justify-between gap-2">
                                                     <div class="w-full">
-                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-start"
+                                                        <input id="datepicker-range-start"
                                                             x-model="selected.eventStartDate" name="event_start_date"
-                                                            type="text"
+                                                            type="date"
                                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="Start date">
                                                         <x-form-error name="event_start_date" />
                                                     </div>
                                                     <span class="mx-2 text-gray-500">to</span>
                                                     <div class="w-full">
-                                                        <input datepicker-format="dd-mm-yyyy" id="datepicker-range-end"
+                                                        <input  id="datepicker-range-end"
                                                             x-model="selected.eventEndDate" name="event_end_date"
-                                                            type="text"
+                                                            type="date"
                                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="End date">
                                                         <x-form-error name="event_end_date" />
