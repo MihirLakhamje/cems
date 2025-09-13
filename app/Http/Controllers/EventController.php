@@ -27,6 +27,12 @@ class EventController extends Controller
             if ($request->filled('end_date')) {
                 $query->whereDate('end_date', '<=', $request->end_date);
             }
+            if ($request->filled('event_start_date')) {
+                $query->whereDate('event_start_date', '>=', $request->event_start_date);
+            }
+            if ($request->filled('event_end_date')) {
+                $query->whereDate('event_end_date', '<=', $request->event_end_date);
+            }
             if ($request->input('owned') === '1' && auth()->check()) {
                 $query->where('department_id', auth()->user()->department_id);
             }
