@@ -10,7 +10,7 @@
 
     {{-- Back button --}}
     <div class="flex items-center gap-4 mb-4">
-        <x-link :typeoflink="'link'" href="{{ route('departments.index') }}"
+        <x-link :typeoflink="'link'" href="{{ back()->getTargetUrl() }}"
             class="text-primary-600 hover:underline dark:text-primary-400">
             ← Back
         </x-link>

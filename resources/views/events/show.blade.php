@@ -10,7 +10,7 @@
 
     {{-- Back & Delete Buttons --}}
     <div class="flex items-center gap-4 mb-6">
-        <x-link :typeoflink="'link'" href="{{ route('events.index') }}"
+        <x-link :typeoflink="'link'" href="{{ back()->getTargetUrl() }}"
             class="text-primary-600 hover:underline dark:text-primary-400">
             ← Back
         </x-link>
