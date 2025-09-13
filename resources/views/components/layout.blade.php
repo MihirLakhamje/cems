@@ -60,9 +60,9 @@
                         </svg>
                     </button>
 
-                        <a href="{{ route('login') }}"
-                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Get
-                            started</a>
+                    <a href="{{ route('login') }}"
+                        class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Get
+                        started</a>
                 </div>
             </div>
         </nav>
@@ -147,9 +147,9 @@
 
                         </div>
 
-                        <div class="flex items-center ">
+                        <div class="flex items-center justify-center">
                             <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName"
-                                class="sm:flex hidden items-center text-sm pe-1 font-medium text-gray-900 rounded-full hover:text-primary-600 dark:hover:text-primary-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
+                                class="sm:flex hidden items-center text-sm pe-1 font-medium text-gray-900 rounded-full cursor-pointer hover:text-gray-200 dark:hover:text-gray-100 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
                                 type="button">
                                 <span class="sr-only">Open user menu</span>
                                 @if (auth()->user()->google_avatar)
@@ -164,12 +164,14 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 @endif
-                                <span class="hidden md:block">{{ Auth::user()->name }}</span>
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
+                                <span class="hidden md:flex">{{ Auth::user()->name }}</span>
+                                <div>
+                                    <svg class="w-2.5 h-2.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                </div>
                             </button>
                             <!-- Dropdown menu -->
                             <div id="dropdownAvatarName"

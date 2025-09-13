@@ -23,6 +23,19 @@
     --color-primary-700: #5145CD;
     --color-primary-800: #42389D;
     --color-primary-900: #362F78;
+
+    --color-gray-50: #f5f8fa;
+    --color-gray-100: #e9eef5;
+    --color-gray-200: #D6DEE9;
+    --color-gray-300: #BFCADD;
+    --color-gray-400: #9AA8C2;
+    --color-gray-500: #7687A8;
+    --color-gray-600: #5B6D8F;
+    --color-gray-700: #455273;
+    --color-gray-800: #2F384F;
+    --color-gray-900: #1D2433;
+
+
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
